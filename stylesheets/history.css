@@ -1,0 +1,1240 @@
+/* line 1, ../sass/history.sass */
+body {
+  padding: 0;
+  margin: 0;
+  font: 400 normal 16px/1.5 "Roboto", Helvetica, Arial, sans-serif;
+}
+
+/* line 7, ../sass/history.sass */
+.connect-button {
+  display: none;
+}
+
+/* line 11, ../sass/history.sass */
+.fetch-button {
+  display: none;
+}
+
+/* line 15, ../sass/history.sass */
+.checkins {
+  padding: 0;
+  margin: 0;
+}
+
+/* line 19, ../sass/history.sass */
+.checkin {
+  display: block;
+  float: left;
+  padding: 0.5em 0.8em;
+  margin: 2px;
+  line-height: 1em;
+  color: white;
+  font-weight: 900;
+  text-transform: uppercase;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* line 41, ../sass/history.sass */
+.category-japanese {
+  background-color: #cc0000;
+}
+
+/* line 43, ../sass/history.sass */
+.category-coffee-shop {
+  background-color: #cc0000;
+}
+
+/* line 45, ../sass/history.sass */
+.category-flower-shop {
+  background-color: #777777;
+}
+
+/* line 47, ../sass/history.sass */
+.category-park {
+  background-color: #00cc00;
+}
+
+/* line 49, ../sass/history.sass */
+.category-latin-american {
+  background-color: #cc0000;
+}
+
+/* line 51, ../sass/history.sass */
+.category-café {
+  background-color: #cc0000;
+}
+
+/* line 53, ../sass/history.sass */
+.category-market {
+  background-color: #777777;
+}
+
+/* line 55, ../sass/history.sass */
+.category-hardware {
+  background-color: #777777;
+}
+
+/* line 57, ../sass/history.sass */
+.category-dog-run {
+  background-color: #00cc00;
+}
+
+/* line 59, ../sass/history.sass */
+.category-dive-bar {
+  background-color: #cc0000;
+}
+
+/* line 61, ../sass/history.sass */
+.category-bar {
+  background-color: #cc0000;
+}
+
+/* line 63, ../sass/history.sass */
+.category-electronics {
+  background-color: #777777;
+}
+
+/* line 65, ../sass/history.sass */
+.category-german {
+  background-color: #cc0000;
+}
+
+/* line 67, ../sass/history.sass */
+.category-salon-barbershop {
+  background-color: #777777;
+}
+
+/* line 69, ../sass/history.sass */
+.category-farmers-market {
+  background-color: #777777;
+}
+
+/* line 71, ../sass/history.sass */
+.category-historic-site {
+  background-color: #00cc00;
+}
+
+/* line 73, ../sass/history.sass */
+.category-grocery-store {
+  background-color: #777777;
+}
+
+/* line 75, ../sass/history.sass */
+.category-desserts {
+  background-color: #cc0000;
+}
+
+/* line 77, ../sass/history.sass */
+.category-sandwiches {
+  background-color: #cc0000;
+}
+
+/* line 79, ../sass/history.sass */
+.category-animal-shelter {
+  background-color: yellow;
+}
+
+/* line 81, ../sass/history.sass */
+.category-thai {
+  background-color: #cc0000;
+}
+
+/* line 83, ../sass/history.sass */
+.category-light-rail {
+  background-color: #0000cc;
+}
+
+/* line 85, ../sass/history.sass */
+.category-street {
+  background-color: #00cc00;
+}
+
+/* line 87, ../sass/history.sass */
+.category-landmark {
+  background-color: #00cc00;
+}
+
+/* line 89, ../sass/history.sass */
+.category-trail {
+  background-color: #00cc00;
+}
+
+/* line 91, ../sass/history.sass */
+.category-science-museum {
+  background-color: yellow;
+}
+
+/* line 93, ../sass/history.sass */
+.category-diner {
+  background-color: #cc0000;
+}
+
+/* line 95, ../sass/history.sass */
+.category-pet-service {
+  background-color: yellow;
+}
+
+/* line 97, ../sass/history.sass */
+.category-apparel {
+  background-color: #777777;
+}
+
+/* line 99, ../sass/history.sass */
+.category-food-truck {
+  background-color: #cc0000;
+}
+
+/* line 101, ../sass/history.sass */
+.category-sculpture {
+  background-color: yellow;
+}
+
+/* line 103, ../sass/history.sass */
+.category-vegetarian-vegan {
+  background-color: #cc0000;
+}
+
+/* line 105, ../sass/history.sass */
+.category-bakery {
+  background-color: #cc0000;
+}
+
+/* line 107, ../sass/history.sass */
+.category-office {
+  background-color: #999999;
+}
+
+/* line 109, ../sass/history.sass */
+.category-event-space {
+  background-color: #999999;
+}
+
+/* line 111, ../sass/history.sass */
+.category-other-outdoors {
+  background-color: #00cc00;
+}
+
+/* line 113, ../sass/history.sass */
+.category-beach {
+  background-color: #00cc00;
+}
+
+/* line 115, ../sass/history.sass */
+.category-fast-food {
+  background-color: #cc0000;
+}
+
+/* line 117, ../sass/history.sass */
+.category-surf-spot {
+  background-color: #00cc00;
+}
+
+/* line 119, ../sass/history.sass */
+.category-church {
+  background-color: yellow;
+}
+
+/* line 121, ../sass/history.sass */
+.category-beer-store {
+  background-color: #cc0000;
+}
+
+/* line 123, ../sass/history.sass */
+.category-playground {
+  background-color: #00cc00;
+}
+
+/* line 125, ../sass/history.sass */
+.category-asian {
+  background-color: #cc0000;
+}
+
+/* line 127, ../sass/history.sass */
+.category-rental-car {
+  background-color: yellow;
+}
+
+/* line 129, ../sass/history.sass */
+.category-entertainment {
+  background-color: #99cc00;
+}
+
+/* line 131, ../sass/history.sass */
+.category-arts-and-crafts {
+  background-color: #777777;
+}
+
+/* line 133, ../sass/history.sass */
+.category-restaurant {
+  background-color: #cc0000;
+}
+
+/* line 135, ../sass/history.sass */
+.category-pizza {
+  background-color: #cc0000;
+}
+
+/* line 137, ../sass/history.sass */
+.category-thrift-vintage {
+  background-color: #777777;
+}
+
+/* line 139, ../sass/history.sass */
+.category-beer-garden {
+  background-color: #cc0000;
+}
+
+/* line 141, ../sass/history.sass */
+.category-garden {
+  background-color: #00cc00;
+}
+
+/* line 143, ../sass/history.sass */
+.category-scenic-lookout {
+  background-color: #00cc00;
+}
+
+/* line 145, ../sass/history.sass */
+.category-airport {
+  background-color: #0000cc;
+}
+
+/* line 147, ../sass/history.sass */
+.category-mexican {
+  background-color: #cc0000;
+}
+
+/* line 149, ../sass/history.sass */
+.category-cupcakes {
+  background-color: #cc0000;
+}
+
+/* line 151, ../sass/history.sass */
+.category-ice-cream {
+  background-color: #cc0000;
+}
+
+/* line 153, ../sass/history.sass */
+.category-field {
+  background-color: #00cc00;
+}
+
+/* line 155, ../sass/history.sass */
+.category-cocktail {
+  background-color: #cc0000;
+}
+
+/* line 157, ../sass/history.sass */
+.category-mountain {
+  background-color: #00cc00;
+}
+
+/* line 159, ../sass/history.sass */
+.category-burritos {
+  background-color: #cc0000;
+}
+
+/* line 161, ../sass/history.sass */
+.category-bridge {
+  background-color: #00cc00;
+}
+
+/* line 163, ../sass/history.sass */
+.category-sushi {
+  background-color: #cc0000;
+}
+
+/* line 165, ../sass/history.sass */
+.category-american {
+  background-color: #cc0000;
+}
+
+/* line 167, ../sass/history.sass */
+.category-supermarket {
+  background-color: #777777;
+}
+
+/* line 169, ../sass/history.sass */
+.category-home {
+  background-color: yellow;
+}
+
+/* line 171, ../sass/history.sass */
+.category-hospital {
+  background-color: yellow;
+}
+
+/* line 173, ../sass/history.sass */
+.category-new-american {
+  background-color: yellow;
+}
+
+/* line 175, ../sass/history.sass */
+.category-indian {
+  background-color: yellow;
+}
+
+/* line 177, ../sass/history.sass */
+.category-furniture-home {
+  background-color: yellow;
+}
+
+/* line 179, ../sass/history.sass */
+.category-tech-startup {
+  background-color: #999999;
+}
+
+/* line 181, ../sass/history.sass */
+.category-veterinarians {
+  background-color: yellow;
+}
+
+/* line 183, ../sass/history.sass */
+.category-pet-store {
+  background-color: yellow;
+}
+
+/* line 185, ../sass/history.sass */
+.category-festival {
+  background-color: yellow;
+}
+
+/* line 187, ../sass/history.sass */
+.category-gastropub {
+  background-color: yellow;
+}
+
+/* line 189, ../sass/history.sass */
+.category-subway {
+  background-color: yellow;
+}
+
+/* line 191, ../sass/history.sass */
+.category-art-museum {
+  background-color: yellow;
+}
+
+/* line 193, ../sass/history.sass */
+.category-vietnamese {
+  background-color: yellow;
+}
+
+/* line 195, ../sass/history.sass */
+.category-donuts {
+  background-color: yellow;
+}
+
+/* line 197, ../sass/history.sass */
+.category-hot-dogs {
+  background-color: yellow;
+}
+
+/* line 199, ../sass/history.sass */
+.category-bike-shop {
+  background-color: yellow;
+}
+
+/* line 201, ../sass/history.sass */
+.category-movie-theater {
+  background-color: yellow;
+}
+
+/* line 203, ../sass/history.sass */
+.category-indie-theater {
+  background-color: yellow;
+}
+
+/* line 205, ../sass/history.sass */
+.category-sporting-goods {
+  background-color: yellow;
+}
+
+/* line 207, ../sass/history.sass */
+.category-seafood {
+  background-color: yellow;
+}
+
+/* line 209, ../sass/history.sass */
+.category-post-office {
+  background-color: yellow;
+}
+
+/* line 211, ../sass/history.sass */
+.category-neighborhood {
+  background-color: yellow;
+}
+
+/* line 213, ../sass/history.sass */
+.category-art-gallery {
+  background-color: yellow;
+}
+
+/* line 215, ../sass/history.sass */
+.category-gas-station-garage {
+  background-color: yellow;
+}
+
+/* line 217, ../sass/history.sass */
+.category-shoes {
+  background-color: yellow;
+}
+
+/* line 219, ../sass/history.sass */
+.category-city {
+  background-color: yellow;
+}
+
+/* line 221, ../sass/history.sass */
+.category-motel {
+  background-color: yellow;
+}
+
+/* line 223, ../sass/history.sass */
+.category-rest-areas {
+  background-color: yellow;
+}
+
+/* line 225, ../sass/history.sass */
+.category-pool {
+  background-color: yellow;
+}
+
+/* line 227, ../sass/history.sass */
+.category-burgers {
+  background-color: yellow;
+}
+
+/* line 229, ../sass/history.sass */
+.category-plaza {
+  background-color: yellow;
+}
+
+/* line 231, ../sass/history.sass */
+.category-hotel {
+  background-color: yellow;
+}
+
+/* line 233, ../sass/history.sass */
+.category-university {
+  background-color: yellow;
+}
+
+/* line 235, ../sass/history.sass */
+.category-bus {
+  background-color: yellow;
+}
+
+/* line 237, ../sass/history.sass */
+.category-bagels {
+  background-color: yellow;
+}
+
+/* line 239, ../sass/history.sass */
+.category-sports-bar {
+  background-color: yellow;
+}
+
+/* line 241, ../sass/history.sass */
+.category-department-store {
+  background-color: yellow;
+}
+
+/* line 243, ../sass/history.sass */
+.category-bowling-alley {
+  background-color: yellow;
+}
+
+/* line 245, ../sass/history.sass */
+.category-bus-station {
+  background-color: yellow;
+}
+
+/* line 247, ../sass/history.sass */
+.category-bank {
+  background-color: yellow;
+}
+
+/* line 249, ../sass/history.sass */
+.category-travel {
+  background-color: yellow;
+}
+
+/* line 251, ../sass/history.sass */
+.category-building {
+  background-color: yellow;
+}
+
+/* line 253, ../sass/history.sass */
+.category-brewery {
+  background-color: yellow;
+}
+
+/* line 255, ../sass/history.sass */
+.category-dim-sum {
+  background-color: yellow;
+}
+
+/* line 257, ../sass/history.sass */
+.category-whisky-bar {
+  background-color: yellow;
+}
+
+/* line 259, ../sass/history.sass */
+.category-salad {
+  background-color: yellow;
+}
+
+/* line 261, ../sass/history.sass */
+.category-accessories {
+  background-color: yellow;
+}
+
+/* line 263, ../sass/history.sass */
+.category-italian {
+  background-color: yellow;
+}
+
+/* line 265, ../sass/history.sass */
+.category-racetrack {
+  background-color: yellow;
+}
+
+/* line 267, ../sass/history.sass */
+.category-lake {
+  background-color: yellow;
+}
+
+/* line 269, ../sass/history.sass */
+.category-arcade {
+  background-color: yellow;
+}
+
+/* line 271, ../sass/history.sass */
+.category-tacos {
+  background-color: yellow;
+}
+
+/* line 273, ../sass/history.sass */
+.category-golf-course {
+  background-color: yellow;
+}
+
+/* line 275, ../sass/history.sass */
+.category-parking {
+  background-color: yellow;
+}
+
+/* line 277, ../sass/history.sass */
+.category-candy-store {
+  background-color: yellow;
+}
+
+/* line 279, ../sass/history.sass */
+.category-camera-store {
+  background-color: yellow;
+}
+
+/* line 281, ../sass/history.sass */
+.category-yoga-studio {
+  background-color: yellow;
+}
+
+/* line 283, ../sass/history.sass */
+.category-convenience-stores {
+  background-color: yellow;
+}
+
+/* line 285, ../sass/history.sass */
+.category-gift-shop {
+  background-color: yellow;
+}
+
+/* line 287, ../sass/history.sass */
+.category-belgian {
+  background-color: yellow;
+}
+
+/* line 289, ../sass/history.sass */
+.category-tea-room {
+  background-color: yellow;
+}
+
+/* line 291, ../sass/history.sass */
+.category-deli-bodega {
+  background-color: yellow;
+}
+
+/* line 293, ../sass/history.sass */
+.category-chinese {
+  background-color: yellow;
+}
+
+/* line 295, ../sass/history.sass */
+.category-toys-and-games {
+  background-color: yellow;
+}
+
+/* line 297, ../sass/history.sass */
+.category-performing-arts {
+  background-color: yellow;
+}
+
+/* line 299, ../sass/history.sass */
+.category-cemetery {
+  background-color: yellow;
+}
+
+/* line 301, ../sass/history.sass */
+.category-juice-bar {
+  background-color: yellow;
+}
+
+/* line 303, ../sass/history.sass */
+.category-pub {
+  background-color: yellow;
+}
+
+/* line 305, ../sass/history.sass */
+.category-frozen-yogurt {
+  background-color: yellow;
+}
+
+/* line 307, ../sass/history.sass */
+.category-wine-bar {
+  background-color: yellow;
+}
+
+/* line 309, ../sass/history.sass */
+.category-planetarium {
+  background-color: yellow;
+}
+
+/* line 311, ../sass/history.sass */
+.category-residential {
+  background-color: yellow;
+}
+
+/* line 313, ../sass/history.sass */
+.category-speakeasy {
+  background-color: yellow;
+}
+
+/* line 315, ../sass/history.sass */
+.category-liquor-store {
+  background-color: yellow;
+}
+
+/* line 317, ../sass/history.sass */
+.category-tennis-court {
+  background-color: yellow;
+}
+
+/* line 319, ../sass/history.sass */
+.category-flea-market {
+  background-color: yellow;
+}
+
+/* line 321, ../sass/history.sass */
+.category-nightlife {
+  background-color: yellow;
+}
+
+/* line 323, ../sass/history.sass */
+.category-bus-stop {
+  background-color: yellow;
+}
+
+/* line 325, ../sass/history.sass */
+.category-gourmet {
+  background-color: yellow;
+}
+
+/* line 327, ../sass/history.sass */
+.category-breakfast {
+  background-color: yellow;
+}
+
+/* line 329, ../sass/history.sass */
+.category-nightclub {
+  background-color: yellow;
+}
+
+/* line 331, ../sass/history.sass */
+.category-bike {
+  background-color: yellow;
+}
+
+/* line 333, ../sass/history.sass */
+.category-smoke-shop {
+  background-color: yellow;
+}
+
+/* line 335, ../sass/history.sass */
+.category-record-shop {
+  background-color: yellow;
+}
+
+/* line 337, ../sass/history.sass */
+.category-theater {
+  background-color: #99cc00;
+}
+
+/* line 339, ../sass/history.sass */
+.category-moroccan {
+  background-color: #cc0000;
+}
+
+/* line 341, ../sass/history.sass */
+.category-lighthouse {
+  background-color: #00cc00;
+}
+
+/* line 343, ../sass/history.sass */
+.category-road {
+  background-color: #0000cc;
+}
+
+/* line 345, ../sass/history.sass */
+.category-laundry {
+  background-color: yellow;
+}
+
+/* line 347, ../sass/history.sass */
+.category-shop {
+  background-color: yellow;
+}
+
+/* line 349, ../sass/history.sass */
+.category-museum {
+  background-color: yellow;
+}
+
+/* line 351, ../sass/history.sass */
+.category-national-park {
+  background-color: #00cc00;
+}
+
+/* line 353, ../sass/history.sass */
+.category-tourist-information {
+  background-color: yellow;
+}
+
+/* line 355, ../sass/history.sass */
+.category-rock-club {
+  background-color: yellow;
+}
+
+/* line 357, ../sass/history.sass */
+.category-jazz-club {
+  background-color: yellow;
+}
+
+/* line 359, ../sass/history.sass */
+.category-southern-soul {
+  background-color: yellow;
+}
+
+/* line 361, ../sass/history.sass */
+.category-b-and-b {
+  background-color: yellow;
+}
+
+/* line 363, ../sass/history.sass */
+.category-zoo {
+  background-color: yellow;
+}
+
+/* line 365, ../sass/history.sass */
+.category-cajun-creole {
+  background-color: yellow;
+}
+
+/* line 367, ../sass/history.sass */
+.category-government {
+  background-color: yellow;
+}
+
+/* line 369, ../sass/history.sass */
+.category-french {
+  background-color: yellow;
+}
+
+/* line 371, ../sass/history.sass */
+.category-library {
+  background-color: yellow;
+}
+
+/* line 373, ../sass/history.sass */
+.category-theme-park {
+  background-color: yellow;
+}
+
+/* line 375, ../sass/history.sass */
+.category-disc-golf {
+  background-color: yellow;
+}
+
+/* line 377, ../sass/history.sass */
+.category-casino {
+  background-color: yellow;
+}
+
+/* line 379, ../sass/history.sass */
+.category-basketball {
+  background-color: yellow;
+}
+
+/* line 381, ../sass/history.sass */
+.category-spiritual {
+  background-color: yellow;
+}
+
+/* line 383, ../sass/history.sass */
+.category-train-station {
+  background-color: yellow;
+}
+
+/* line 385, ../sass/history.sass */
+.category-pharmacy {
+  background-color: yellow;
+}
+
+/* line 387, ../sass/history.sass */
+.category-karaoke {
+  background-color: yellow;
+}
+
+/* line 389, ../sass/history.sass */
+.category-football {
+  background-color: yellow;
+}
+
+/* line 391, ../sass/history.sass */
+.category-cineplex {
+  background-color: yellow;
+}
+
+/* line 393, ../sass/history.sass */
+.category-music-venue {
+  background-color: yellow;
+}
+
+/* line 395, ../sass/history.sass */
+.category-gay-bar {
+  background-color: yellow;
+}
+
+/* line 397, ../sass/history.sass */
+.category-scandinavian {
+  background-color: yellow;
+}
+
+/* line 399, ../sass/history.sass */
+.category-other-event {
+  background-color: yellow;
+}
+
+/* line 401, ../sass/history.sass */
+.category-harbor-marina {
+  background-color: yellow;
+}
+
+/* line 403, ../sass/history.sass */
+.category-ethiopian {
+  background-color: yellow;
+}
+
+/* line 405, ../sass/history.sass */
+.category-food-and-drink {
+  background-color: yellow;
+}
+
+/* line 407, ../sass/history.sass */
+.category-taxi {
+  background-color: yellow;
+}
+
+/* line 409, ../sass/history.sass */
+.category-food-court {
+  background-color: yellow;
+}
+
+/* line 411, ../sass/history.sass */
+.category-mall {
+  background-color: yellow;
+}
+
+/* line 413, ../sass/history.sass */
+.category-baseball {
+  background-color: yellow;
+}
+
+/* line 415, ../sass/history.sass */
+.category-boat-ferry {
+  background-color: yellow;
+}
+
+/* line 417, ../sass/history.sass */
+.category-print-shop {
+  background-color: yellow;
+}
+
+/* line 419, ../sass/history.sass */
+.category-antiques {
+  background-color: #777777;
+}
+
+/* line 421, ../sass/history.sass */
+.category-spa {
+  background-color: #777777;
+}
+
+/* line 423, ../sass/history.sass */
+.category-bookstore {
+  background-color: #777777;
+}
+
+/* line 425, ../sass/history.sass */
+.category-office-supplies {
+  background-color: #777777;
+}
+
+/* line 427, ../sass/history.sass */
+.category-roof-deck {
+  background-color: yellow;
+}
+
+/* line 429, ../sass/history.sass */
+.category-hostel {
+  background-color: yellow;
+}
+
+/* line 431, ../sass/history.sass */
+.category-korean {
+  background-color: #cc0000;
+}
+
+/* line 433, ../sass/history.sass */
+.category-opera-house {
+  background-color: yellow;
+}
+
+/* line 435, ../sass/history.sass */
+.category-coworking-space {
+  background-color: yellow;
+}
+
+/* line 437, ../sass/history.sass */
+.category-high-school {
+  background-color: yellow;
+}
+
+/* line 439, ../sass/history.sass */
+.category-administrative-building {
+  background-color: yellow;
+}
+
+/* line 441, ../sass/history.sass */
+.category-city-hall {
+  background-color: yellow;
+}
+
+/* line 443, ../sass/history.sass */
+.category-automotive {
+  background-color: yellow;
+}
+
+/* line 445, ../sass/history.sass */
+.category-mongolian {
+  background-color: yellow;
+}
+
+/* line 447, ../sass/history.sass */
+.category-convention-center {
+  background-color: yellow;
+}
+
+/* line 449, ../sass/history.sass */
+.category-meeting-room {
+  background-color: yellow;
+}
+
+/* line 451, ../sass/history.sass */
+.category-lounge {
+  background-color: yellow;
+}
+
+/* line 453, ../sass/history.sass */
+.category-soup {
+  background-color: yellow;
+}
+
+/* line 455, ../sass/history.sass */
+.category-quad {
+  background-color: yellow;
+}
+
+/* line 457, ../sass/history.sass */
+.category-ramen-noodles {
+  background-color: yellow;
+}
+
+/* line 459, ../sass/history.sass */
+.category-factory {
+  background-color: yellow;
+}
+
+/* line 461, ../sass/history.sass */
+.category-track {
+  background-color: yellow;
+}
+
+/* line 463, ../sass/history.sass */
+.category-academic-building {
+  background-color: yellow;
+}
+
+/* line 465, ../sass/history.sass */
+.category-mediterranean {
+  background-color: yellow;
+}
+
+/* line 467, ../sass/history.sass */
+.category-community-college {
+  background-color: yellow;
+}
+
+/* line 469, ../sass/history.sass */
+.category-pier {
+  background-color: yellow;
+}
+
+/* line 471, ../sass/history.sass */
+.category-organic-grocery {
+  background-color: yellow;
+}
+
+/* line 473, ../sass/history.sass */
+.category-lab {
+  background-color: yellow;
+}
+
+/* line 475, ../sass/history.sass */
+.category-gym {
+  background-color: yellow;
+}
+
+/* line 477, ../sass/history.sass */
+.category-african {
+  background-color: yellow;
+}
+
+/* line 479, ../sass/history.sass */
+.category-design {
+  background-color: yellow;
+}
+
+/* line 481, ../sass/history.sass */
+.category-afghan {
+  background-color: yellow;
+}
+
+/* line 483, ../sass/history.sass */
+.category-terminal {
+  background-color: yellow;
+}
+
+/* line 485, ../sass/history.sass */
+.category-history-museum {
+  background-color: yellow;
+}
+
+/* line 487, ../sass/history.sass */
+.category-concert-hall {
+  background-color: yellow;
+}
+
+/* line 489, ../sass/history.sass */
+.category-resort {
+  background-color: yellow;
+}
+
+/* line 491, ../sass/history.sass */
+.category-plane {
+  background-color: yellow;
+}
+
+/* line 493, ../sass/history.sass */
+.category-arts {
+  background-color: yellow;
+}
+
+/* line 495, ../sass/history.sass */
+.category-boutique {
+  background-color: yellow;
+}
+
+/* line 497, ../sass/history.sass */
+.category-board-shop {
+  background-color: yellow;
+}
+
+/* line 499, ../sass/history.sass */
+.category-music-store {
+  background-color: yellow;
+}
+
+/* line 501, ../sass/history.sass */
+.category-train {
+  background-color: yellow;
+}
+
+/* line 503, ../sass/history.sass */
+.category-capitol-building {
+  background-color: yellow;
+}
+
+/* line 505, ../sass/history.sass */
+.category-residence-hall {
+  background-color: yellow;
+}
+
+/* line 507, ../sass/history.sass */
+.category-irish {
+  background-color: yellow;
+}
+
+/* line 509, ../sass/history.sass */
+.category-farm {
+  background-color: yellow;
+}
+
+/* line 511, ../sass/history.sass */
+.category-eastern-european {
+  background-color: yellow;
+}
+
+/* line 513, ../sass/history.sass */
+.category-hotel-bar {
+  background-color: yellow;
+}
+
+/* line 515, ../sass/history.sass */
+.category-lingerie {
+  background-color: yellow;
+}
+
+/* line 517, ../sass/history.sass */
+.category-botanical-garden {
+  background-color: yellow;
+}
+
+/* line 519, ../sass/history.sass */
+.category-wine-shop {
+  background-color: yellow;
+}
+
+/* line 521, ../sass/history.sass */
+.category-greek {
+  background-color: yellow;
+}
