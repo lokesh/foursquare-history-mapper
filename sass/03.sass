@@ -1,0 +1,555 @@
+@import "compass/css3"
+
+$red: #ff7997
+$pink: #ff4081
+$purple: #e040fb
+$deep-purple: #7c4dff
+$indigo: #536dfe
+$blue: #6889ff
+$light-blue: #40c4ff
+$cyan: #18ffff
+$teal: #64ffda
+$green: #5af158
+$light-green: #b2ff59
+$lime: #eeff41
+$yellow: #ffff00
+$amber: #ffd740
+$orange: #ffab40
+$deep-orange: #ff6e40
+$brown: #bcaaa4
+$grey: #eeeeee
+$blue-grey: #b0bec5
+$dark-gray: #212121
+
+body
+  padding: 0
+  margin: 0
+  font: 400 normal 16px/1.5 "Roboto", Helvetica, Arial, sans-serif
+
+.connect-button
+  display: none
+
+
+.fetch-button
+  display: none
+
+.checkins
+  padding: 0
+  margin: 0
+
+.checkin
+  position: absolute
+  display: block
+  padding: 0.5em 0.8em
+  line-height: 1em
+  color: white
+  background-color: black
+  font-weight: 900
+  text-transform: uppercase
+  -webkit-font-smoothing: antialiased
+
+.checkin-circle
+  position: absolute
+  width: 10px
+  height: 10px
+  background-color: $purple
+  +opacity(0.2)
+  +border-radius(100%)
+
+$arts: $lime
+$bar: $purple
+$cafe: $deep-orange
+$food: $red
+$home: $amber
+$office: $grey
+$park: $green
+$shop: $cyan
+$transport: $blue
+$uncategorized: $dark-gray
+
+.category-
+  background-color: $uncategorized
+.category-japanese
+  background-color: $food
+.category-coffee-shop
+  background-color: $cafe
+.category-flower-shop
+  background-color: $shop
+.category-park
+  background-color: $park
+.category-latin-american
+  background-color: $food
+.category-café
+  background-color: $cafe
+.category-market
+  background-color: $shop
+.category-hardware
+  background-color: $shop
+.category-dog-run
+  background-color: $park
+.category-dive-bar
+  background-color: $bar
+.category-bar
+  background-color: $bar
+.category-electronics
+  background-color: $shop
+.category-german
+  background-color: $food
+.category-salon-barbershop
+  background-color: $shop
+.category-farmers-market
+  background-color: $shop
+.category-historic-site
+  background-color: $park
+.category-grocery-store
+  background-color: $shop
+.category-desserts
+  background-color: $food
+.category-sandwiches
+  background-color: $food
+.category-animal-shelter
+  background-color: $shop
+.category-thai
+  background-color: $food
+.category-light-rail
+  background-color: $transport
+.category-street
+  background-color: $park
+.category-landmark
+  background-color: $park
+.category-trail
+  background-color: $park
+.category-science-museum
+  background-color: $arts
+.category-diner
+  background-color: $food
+.category-pet-service
+  background-color: $shop
+.category-apparel
+  background-color: $shop
+.category-food-truck
+  background-color: $food
+.category-sculpture
+  background-color: $park
+.category-vegetarian-vegan
+  background-color: $food
+.category-bakery
+  background-color: $food
+.category-office
+  background-color: $office
+.category-event-space
+  background-color: $office
+.category-other-outdoors
+  background-color: $park
+.category-beach
+  background-color: $park
+.category-fast-food
+  background-color: $food
+.category-surf-spot
+  background-color: $park
+.category-church
+  background-color: $park
+.category-beer-store
+  background-color: $shop
+.category-playground
+  background-color: $park
+.category-asian
+  background-color: $food
+.category-rental-car
+  background-color: $shop
+.category-entertainment
+  background-color: $arts
+.category-arts-and-crafts
+  background-color: $shop
+.category-restaurant
+  background-color: $food
+.category-pizza
+  background-color: $food
+.category-thrift-vintage
+  background-color: $shop
+.category-beer-garden
+  background-color: $bar
+.category-garden
+  background-color: $park
+.category-garden-center
+  background-color: $shop
+.category-scenic-lookout
+  background-color: $park
+.category-airport
+  background-color: $transport
+.category-mexican
+  background-color: $food
+.category-cupcakes
+  background-color: $food
+.category-ice-cream
+  background-color: $food
+.category-field
+  background-color: $park
+.category-cocktail
+  background-color: $bar
+.category-mountain
+  background-color: $park
+.category-burritos
+  background-color: $food
+.category-bridge
+  background-color: $park
+.category-sushi
+  background-color: $food
+.category-american
+  background-color: $food
+.category-supermarket
+  background-color: $shop
+.category-home
+  background-color: $home
+.category-hospital
+  background-color: $shop
+.category-new-american
+  background-color: $food
+.category-indian
+  background-color: $food
+.category-furniture-home
+  background-color: $shop
+.category-tech-startup
+  background-color: $office
+.category-veterinarians
+  background-color: $shop
+.category-pet-store
+  background-color: $shop
+.category-festival
+  background-color: $arts
+.category-gastropub
+  background-color: $food
+.category-subway
+  background-color: $transport
+.category-art-museum
+  background-color: $arts
+.category-vietnamese
+  background-color: $food
+.category-donuts
+  background-color: $food
+.category-hot-dogs
+  background-color: $food
+.category-bike-shop
+  background-color: $shop
+.category-movie-theater
+  background-color: $arts
+.category-indie-theater
+  background-color: $arts
+.category-sporting-goods
+  background-color: $shop
+.category-seafood
+  background-color: $food
+.category-post-office
+  background-color: $shop
+.category-neighborhood
+  background-color: $park
+.category-art-gallery
+  background-color: $arts
+.category-gas-station-garage
+  background-color: $shop
+.category-shoes
+  background-color: $shop
+.category-city
+  background-color: $park
+.category-motel
+  background-color: $shop
+.category-rest-areas
+  background-color: $transport
+.category-pool
+  background-color: $park
+.category-burgers
+  background-color: $food
+.category-plaza
+  background-color: $park
+.category-hotel
+  background-color: $shop
+.category-university
+  background-color: $office
+.category-bus
+  background-color: $transport
+.category-bagels
+  background-color: $food
+.category-sports-bar
+  background-color: $bar
+.category-department-store
+  background-color: $shop
+.category-bowling-alley
+  background-color: $shop
+.category-bus-station
+  background-color: $transport
+.category-bank
+  background-color: $shop
+.category-travel
+  background-color: $transport
+.category-building
+  background-color: $home
+.category-brewery
+  background-color: $bar
+.category-dim-sum
+  background-color: $food
+.category-whisky-bar
+  background-color: $bar
+.category-salad
+  background-color: $food
+.category-accessories
+  background-color: $shop
+.category-italian
+  background-color: $food
+.category-racetrack
+  background-color: $park
+.category-lake
+  background-color: $park
+.category-arcade
+  background-color: $shop
+.category-tacos
+  background-color: $food
+.category-golf-course
+  background-color: $park
+.category-parking
+  background-color: $transport
+.category-candy-store
+  background-color: $shop
+.category-camera-store
+  background-color: $shop
+.category-yoga-studio
+  background-color: $shop
+.category-convenience-stores
+  background-color: $shop
+.category-gift-shop
+  background-color: $shop
+.category-belgian
+  background-color: $food
+.category-tea-room
+  background-color: $cafe
+.category-deli-bodega
+  background-color: $food
+.category-chinese
+  background-color: $food
+.category-toys-and-games
+  background-color: $shop
+.category-performing-arts
+  background-color: $arts
+.category-cemetery
+  background-color: $park
+.category-juice-bar
+  background-color: $food
+.category-pub
+  background-color: $bar
+.category-frozen-yogurt
+  background-color: $food
+.category-wine-bar
+  background-color: $bar
+.category-planetarium
+  background-color: $arts
+.category-residential
+  background-color: $home
+.category-speakeasy
+  background-color: $bar
+.category-liquor-store
+  background-color: $shop
+.category-tennis-court
+  background-color: $park
+.category-flea-market
+  background-color: $shop
+.category-nightlife
+  background-color: $bar
+.category-bus-stop
+  background-color: $transport
+.category-gourmet
+  background-color: $food
+.category-breakfast
+  background-color: $food
+.category-nightclub
+  background-color: $bar
+.category-bike
+  background-color: $transport
+.category-smoke-shop
+  background-color: $shop
+.category-record-shop
+  background-color: $shop
+.category-theater
+  background-color: $arts
+.category-moroccan
+  background-color: $food
+.category-lighthouse
+  background-color: $park
+.category-road
+  background-color: $transport
+.category-laundry
+  background-color: $shop
+.category-shop
+  background-color: $shop
+.category-museum
+  background-color: $arts
+.category-national-park
+  background-color: $park
+.category-tourist-information
+  background-color: $office
+.category-rock-club
+  background-color: $arts
+.category-jazz-club
+  background-color: $arts
+.category-southern-soul
+  background-color: $food
+.category-b-and-b
+  background-color: $home
+.category-zoo
+  background-color: $park
+.category-cajun-creole
+  background-color: $food
+.category-government
+  background-color: $office
+.category-french
+  background-color: $food
+.category-library
+  background-color: $arts
+.category-theme-park
+  background-color: $arts
+.category-disc-golf
+  background-color: $park
+.category-casino
+  background-color: $arts
+.category-basketball
+  background-color: $park
+.category-spiritual
+  background-color: $arts
+.category-train-station
+  background-color: $transport
+.category-pharmacy
+  background-color: $shop
+.category-karaoke
+  background-color: $bar
+.category-football
+  background-color: $park
+.category-cineplex
+  background-color: $arts
+.category-music-venue
+  background-color: $arts
+.category-gay-bar
+  background-color: $bar
+.category-scandinavian
+  background-color: $food
+.category-other-event
+  background-color: $arts
+.category-harbor-marina
+  background-color: $park
+.category-ethiopian
+  background-color: $food
+.category-food-and-drink
+  background-color: $food
+.category-taxi
+  background-color: $transport
+.category-food-court
+  background-color: $food
+.category-mall
+  background-color: $shop
+.category-baseball
+  background-color: $park
+.category-boat-ferry
+  background-color: $transport
+.category-print-shop
+  background-color: $shop
+.category-antiques
+  background-color: $shop
+.category-spa
+  background-color: $shop
+.category-bookstore
+  background-color: $shop
+.category-office-supplies
+  background-color: $shop
+.category-roof-deck
+  background-color: $home
+.category-hostel
+  background-color: $home
+.category-korean
+  background-color: $food
+.category-opera-house
+  background-color: $arts
+.category-coworking-space
+  background-color: $office
+.category-high-school
+  background-color: $office
+.category-administrative-building
+  background-color: $office
+.category-city-hall
+  background-color: $office
+.category-automotive
+  background-color: $shop
+.category-mongolian
+  background-color: $food
+.category-convention-center
+  background-color: $office
+.category-meeting-room
+  background-color: $office
+.category-lounge
+  background-color: $bar
+.category-soup
+  background-color: $food
+.category-quad
+  background-color: $park
+.category-ramen-noodles
+  background-color: $food
+.category-factory
+  background-color: $office
+.category-track
+  background-color: $park
+.category-academic-building
+  background-color: $office
+.category-mediterranean
+  background-color: $food
+.category-community-college
+  background-color: $office
+.category-pier
+  background-color: $park
+.category-organic-grocery
+  background-color: $shop
+.category-lab
+  background-color: $office
+.category-gym
+  background-color: $shop
+.category-african
+  background-color: $food
+.category-design
+  background-color: $shop
+.category-afghan
+  background-color: $food
+.category-terminal
+  background-color: $transport
+.category-history-museum
+  background-color: $arts
+.category-concert-hall
+  background-color: $arts
+.category-resort
+  background-color: $transport
+.category-plane
+  background-color: $transport
+.category-arts
+  background-color: $arts
+.category-boutique
+  background-color: $shop
+.category-board-shop
+  background-color: $shop
+.category-music-store
+  background-color: $shop
+.category-train
+  background-color: $transport
+.category-capitol-building
+  background-color: $office
+.category-residence-hall
+  background-color: $home
+.category-irish
+  background-color: $food
+.category-farm
+  background-color: $park
+.category-eastern-european
+  background-color: $food
+.category-hotel-bar
+  background-color: $bar
+.category-lingerie
+  background-color: $shop
+.category-botanical-garden
+  background-color: $park
+.category-wine-shop
+  background-color: $shop
+.category-greek
+  background-color: $food
