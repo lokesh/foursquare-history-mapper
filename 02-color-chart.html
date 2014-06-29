@@ -19,7 +19,7 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
   <script src="//d3js.org/d3.v3.min.js"></script>
-  
+  <script src="js/config.js"></script>  
 
   <script type="text/template" id="template">
     <ul class="checkins">
@@ -48,11 +48,10 @@
     // We're using OAuth to access the Foursquare API.
     // https://developer.foursquare.com/overview/auth
     var token;
-    var clientID   = 'EOR1IUQHRPBCVEAFX0XTOCTPRSIJARFVXZGBUGKV012MNA4C';
     var apiVersion = 20140620;
 
     var authParams = {
-      'client_id': 'EOR1IUQHRPBCVEAFX0XTOCTPRSIJARFVXZGBUGKV012MNA4C',
+      'client_id': CLIENT_ID,
       'response_type': 'token',
       'redirect_uri': 'http://localhost:8000/foursquare-simple-chart.html'
     };

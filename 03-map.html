@@ -8,7 +8,8 @@
 
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
-  <link href="//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900,100italic,300italic,400italic,500italic,700italic,900italic" rel="stylesheet">
+<!--   <link href="//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900,100italic,300italic,400italic,500italic,700italic,900italic|Roboto+Condensed:400,700" rel="stylesheet">
+ --> 
   <link href="css/03.css" rel="stylesheet">
 </head>
 <body>
@@ -18,22 +19,34 @@
 
   <div id="map"></div>
 
-  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
-  <script src="//d3js.org/d3.v3.min.js"></script>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/underscore-min.js"></script>
+  <script src="js/d3.v3.min.js"></script>
+  <script src="js/config.js"></script>
   
-  <script type="text/template" id="list-template">
-    <ul class="checkins">
-        <% _.each(data, function(checkin){ %>
-          <li class="checkin category-<%- checkin.category %>">
-            <%- checkin.name %>
-          </li>
-      <% }); %>
-    </ul>
-  </script>
-
-
   <script>
+
+    // ------------------------
+    // Constants
+    // ------------------------
+
+    var MAP_WIDTH  = 1500;
+    var MAP_HEIGHT = 1500;
+
+    var SF_RECT = {
+      'lat1': 37.836374, 
+      'lng1': -122.547807,
+      'lat2': 37.704208,
+      'lng2': -122.346448
+    };
+
+    var SF_TEST_RECT = {
+      'lat1': 37.78, 
+      'lng1': -122.445,
+      'lat2': 37.77,
+      'lng2': -122.42
+    };
+
 
     // ------------------------
     // Datastore
@@ -48,11 +61,10 @@
     // We're using OAuth to access the Foursquare API.
     // https://developer.foursquare.com/overview/auth
     var token;
-    var clientID   = 'EOR1IUQHRPBCVEAFX0XTOCTPRSIJARFVXZGBUGKV012MNA4C';
     var apiVersion = 20140620;
 
     var authParams = {
-      'client_id': 'EOR1IUQHRPBCVEAFX0XTOCTPRSIJARFVXZGBUGKV012MNA4C',
+      'client_id': CLIENT_ID,
       'response_type': 'token',
       'redirect_uri': 'http://localhost:8000/03-map.html'
     };
@@ -61,18 +73,6 @@
     var checkinsURL                = 'https://api.foursquare.com/v2/users/self/checkins';
     var CHECKINS_LIMIT_PER_REQUEST = 250;
 
-
-    // ------------------------
-    // Underscore Templating
-    // ------------------------
-
-    // When rending an underscore template, we want top-level variables to be 
-    // referenced as part of an object. For technical reasons (scope-chain
-    // search), this speeds up rendering.
-    _.templateSettings.variable = 'data';
-
-    // Grab the HTML out of our template tag and pre-compile it.
-    var listTemplate = _.template($('#list-template').html());
 
     // ------------------------
     // UI Event Handlers
@@ -85,6 +85,7 @@
     $('.fetch-button').on('click', function(event){
       fetchCheckins();
     });
+
 
     // ------------------------
 
@@ -152,40 +153,45 @@
     }
 
 
-    function dedupeVenues(checkins) {
-      return _.uniq(checkins, function(checkin, key, a) { 
+    function dedupeVenues() {
+      checkins = _.uniq(checkins, function(checkin, key, a) { 
         return checkin.name;
       });
     }
 
-    function filterByGeoRect(checkins, lat1, lng1, lat2, lng2) {
-      return _.filter(checkins, function(checkin) {
-        return ((lat1 > checkin.lat) && 
-                (lat2 < checkin.lat) && 
-                (lng1 < checkin.lng) && 
-                (lng2 > checkin.lng));
+    function filterByGeoRect(rect) {
+      checkins = _.filter(checkins, function(checkin) {
+        return ((rect.lat1 > checkin.lat) && 
+                (rect.lat2 < checkin.lat) && 
+                (rect.lng1 < checkin.lng) && 
+                (rect.lng2 > checkin.lng));
       });
     }
 
     // Lowercase and replace '/' and ' ' with hyphens
-    function formatCategories(checkins) {
+    function formatCategories() {
       // var categories = _.uniq(_.pluck(checkins, 'category'));
-      return _.map(checkins, function(checkin) {
-        checkin.category = checkin.category.toLowerCase().split('\'').join('').split('&').join('and').split(' / ').join('-').split(' ').join('-');
+      checkins =  _.map(checkins, function(checkin) {
+        checkin.category = checkin.category
+          .toLowerCase()
+          .split('\'').join('')
+          .split('&').join('and')
+          .split(' / ').join('-')
+          .split(' ').join('-');
+
         return checkin;
       });
       
     }
 
-    function renderList(checkins) {
-      $('body').append(listTemplate(checkins));
+    function sortByBeenHereCountDescending() {
+      var maxBeenHereCount = _.max(checkins, function(checkin){ return checkin.beenHereCount; }).beenHereCount;
+      checkins = _.sortBy(checkins, function(a, b, c) { 
+        return maxBeenHereCount - a.beenHereCount;
+      });
     }
-    
-    function renderMap(checkins) {
-      // TODO: Don't hardcode width and height as this will cause distortion.
-      var mapWidth  = 8000;
-      var mapHeight = 8000;
 
+    function renderMap() {
       var minLat = _.min(checkins, function(checkin){ return checkin.lat; }).lat;
       var maxLat = _.max(checkins, function(checkin){ return checkin.lat; }).lat;
       var minLng = _.min(checkins, function(checkin){ return checkin.lng; }).lng;
@@ -194,22 +200,68 @@
       var latRange = maxLat - minLat;
       var lngRange = maxLng - minLng;
       
-      var latPixels = mapHeight / latRange;
-      var lngPixels = mapWidth / lngRange;
+      var latPixels = MAP_HEIGHT / latRange;
+      var lngPixels = MAP_WIDTH / lngRange;
       
       var $map = $('#map');
       _.each(checkins, function(checkin){
-        var fontSize = Math.min(24, (checkin.beenHereCount * 4) + 1);
+        var fontSize = Math.min(36, (checkin.beenHereCount * 2) + 6);
         $('<div>', {
           'class': 'checkin category-' + checkin.category,
           'text': checkin.name
         }).css({
           'top': ((maxLat - checkin.lat) * latPixels) + 'px',
-          'left': mapWidth - ((maxLng - checkin.lng) * lngPixels) + 'px',
+          'left': MAP_WIDTH - ((maxLng - checkin.lng) * lngPixels) + 'px',
           'font-size': fontSize 
         })
         .appendTo($map);
       });
+    }
+
+    function fixOverlap() {
+      $('.checkin').each(function(i, el) {
+        var $el = $(el);
+        
+        // while (get overlapping() > 0)
+        var ovarlappingRects = getOverlappingRects($el);
+        if (ovarlappingRects.length > 0 ){
+          // $el.css({
+          //   'color': 'black',
+          //   'background-color': 'yellow'
+          // });
+        }
+        // $('.checkin').not($el).each(function(i, el) {
+        //   var $el = $(el);
+        // });
+      });
+    }
+
+    function getOverlappingRects($el){
+      var overlappingRects = [];
+      $('.checkin').not($el).each(function(i, el2) {
+        var $el2 = $(el2);
+        if (doRectsOverlap($el, $el2)) {
+          overlappingRects.push($el2);
+        } 
+      });
+      return overlappingRects;
+    }
+
+    function doRectsOverlap($el, $el2) {
+      var top1    = $el.position().top;
+      var left1   = $el.position().left;
+      var bottom1 = top1 + $el.outerHeight();
+      var right1  = left1 + $el.outerWidth();
+
+      var top2    = $el2.position().top;
+      var left2   = $el2.position().left;
+      var bottom2 = top2 + $el2.outerHeight();
+      var right2  = left2 + $el2.outerWidth();
+
+      return !((bottom1  < top2) ||
+               (left1 > right2) ||
+               (top1 > bottom2) ||
+               (right1 < left2));
     }
 
     // ------------------------
@@ -220,11 +272,12 @@
       checkins = [];
       checkForToken();
     } else {
-      checkins = dedupeVenues(checkins);
-      checkins = filterByGeoRect(checkins, 37.836374, -122.547807, 37.704208, -122.346448);
-      checkins = formatCategories(checkins);
-      // renderList(checkins);
-      renderMap(checkins);
+      filterByGeoRect(SF_TEST_RECT);
+      dedupeVenues();
+      formatCategories();
+      sortByBeenHereCountDescending();
+      renderMap();
+      fixOverlap();
     }
 
   </script>
