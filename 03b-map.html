@@ -8,9 +8,9 @@
 
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
-<!--   <link href="//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900,100italic,300italic,400italic,500italic,700italic,900italic|Roboto+Condensed:400,700" rel="stylesheet">
- --> 
-  <link href="css/03.css" rel="stylesheet">
+  <link href="//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900,100italic,300italic,400italic,500italic,700italic,900italic|Roboto+Condensed:400,700" rel="stylesheet">
+ 
+  <link href="css/03b.css" rel="stylesheet">
 </head>
 <body>
 
@@ -19,9 +19,9 @@
 
   <div id="map"></div>
 
-  <script src="js/jquery.min.js"></script>
-  <script src="js/underscore-min.js"></script>
-  <script src="js/d3.v3.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+  <script src="//d3js.org/d3.v3.min.js"></script>
   <script src="js/config.js"></script>
   
   <script>
@@ -30,8 +30,8 @@
     // Constants
     // ------------------------
 
-    var MAP_WIDTH  = 1500;
-    var MAP_HEIGHT = 1500;
+    var MAP_WIDTH  = 3000;
+    var MAP_HEIGHT = 3000;
 
     var SF_RECT = {
       'lat1': 37.836374, 
@@ -40,11 +40,25 @@
       'lng2': -122.346448
     };
 
-    var SF_TEST_RECT = {
+    var QUARTER_SF_RECT = {
+      'lat1': 37.7933325, 
+      'lng1': -122.48746725,
+      'lat2': 37.7472495,
+      'lng2': -122.40678775
+    };
+
+    var DIVIS_RECT = {
       'lat1': 37.78, 
       'lng1': -122.445,
       'lat2': 37.77,
       'lng2': -122.42
+    };
+
+    var HOME_RECT = {
+      'lat1': 37.779, 
+      'lng1': -122.45,
+      'lat2': 37.772,
+      'lng2': -122.43
     };
 
 
@@ -100,6 +114,7 @@
     }
 
     function fetchCheckins(offset) {
+      console.log('hi');
       offset = (typeof offset === "undefined") ? 0: offset;
 
       return $.ajax({
@@ -210,8 +225,8 @@
           'class': 'checkin category-' + checkin.category,
           'text': checkin.name
         }).css({
-          'top': ((maxLat - checkin.lat) * latPixels) + 'px',
-          'left': MAP_WIDTH - ((maxLng - checkin.lng) * lngPixels) + 'px',
+          'top': Math.floor(((maxLat - checkin.lat) * latPixels)) + 'px',
+          'left': Math.floor(MAP_WIDTH - ((maxLng - checkin.lng) * lngPixels)) + 'px',
           'font-size': fontSize 
         })
         .appendTo($map);
@@ -221,33 +236,40 @@
     function fixOverlap() {
       $('.checkin').each(function(i, el) {
         var $el = $(el);
-        $el.data('top', $el.position().top);
-        $el.data('left', $el.position().left);
-        $el.data('bottom', $el.data('top') + $el.outerHeight());
-        $el.data('right', $el.data('left') + $el.outerWidth());
+        // $el.data('top', $el.position().top);
+        // $el.data('left', $el.position().left);
+        // $el.data('bottom', $el.data('top') + $el.outerHeight());
+        // $el.data('right', $el.data('left') + $el.outerWidth());
+        // $el.data('width', $el.outerHeight());
+        // $el.data('height', $el.outerWidth());
       });
-     
+      
+      var checkinCount = $('.checkin').length;
       $('.checkin').each(function(i, el) {
         var $el = $(el);
         
+        var ovarlappingRects = getOverlappingRects($el);
         while (getOverlappingRects($el).length > 0) {
-          $el.data('top', ($el.data('top') + 5));
-          $el.css('top', $el.data('top') + 'px');
+          // console.log(getOverlappingRects($el).length);
+          console.log(i + '/' + checkinCount + ' - ' + ' top: ' + $el.position().top);
+          $el.css('top', $el.position().top + 20 + 'px');
+          
+          // $el.data('top', $el.position().top);
+          
         }
         // var t0 = performance.now();
-        var ovarlappingRects = getOverlappingRects($el);
+        
         // var t1 = performance.now();
         // console.log(t1 - t0);
 
-        if (ovarlappingRects.length > 0 ){
-          // $el.css({
-          //   'color': 'black',
-          //   'background-color': 'yellow'
-          // });
-        }
-        // $('.checkin').not($el).each(function(i, el) {
-        //   var $el = $(el);
-        // });
+
+        // If overlapping, color yellow
+        // if (ovarlappingRects.length > 0 ){
+        //   $el.css({
+        //     'color': 'black',
+        //     'background-color': 'yellow'
+        //   });
+        // }
       });
     }
 
@@ -263,10 +285,10 @@
     }
 
     function doRectsOverlap($el1, $el2) {
-      return !(($el1.data('bottom')  < $el2.data('top')) ||
-               ($el1.data('left') > $el2.data('right')) ||
-               ($el1.data('top') > $el2.data('bottom')) ||
-               ($el1.data('right') < $el2.data('left')));
+      return !(($el1.position().top + $el1.outerHeight() < $el2.position().top) ||
+               ($el1.position().left > $el2.position().left + $el2.outerWidth()) ||
+               ($el1.position().top > $el2.position().top + $el2.outerHeight()) ||
+               ($el1.position().left + $el1.outerWidth() < $el2.position().left));
     }
 
     // ------------------------
@@ -277,10 +299,10 @@
       checkins = [];
       checkForToken();
     } else {
-      filterByGeoRect(SF_TEST_RECT);
+      filterByGeoRect(QUARTER_SF_RECT);
       dedupeVenues();
       formatCategories();
-      sortByBeenHereCountDescending();
+      // sortByBeenHereCountDescending();
       renderMap();
       fixOverlap();
     }

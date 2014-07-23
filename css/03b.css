@@ -1,0 +1,1266 @@
+/* line 24, ../sass/03b.sass */
+body {
+  padding: 0;
+  margin: 0;
+  background-color: #333333;
+  font: 400 normal 16px/1.5 "Roboto Condensed", Helvetica, Arial, sans-serif;
+}
+
+/* line 30, ../sass/03b.sass */
+.connect-button {
+  display: none;
+}
+
+/* line 34, ../sass/03b.sass */
+.fetch-button {
+  display: none;
+}
+
+/* line 37, ../sass/03b.sass */
+.checkins {
+  padding: 0;
+  margin: 0;
+}
+
+/* line 41, ../sass/03b.sass */
+.checkin {
+  position: absolute;
+  display: block;
+  padding: 0.2em 0.4em;
+  line-height: 1em;
+  color: white;
+  background-color: black;
+  font-weight: 900;
+  text-transform: uppercase;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* line 52, ../sass/03b.sass */
+.checkin-circle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #e040fb;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=20);
+  opacity: 0.2;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  -ms-border-radius: 100%;
+  -o-border-radius: 100%;
+  border-radius: 100%;
+}
+
+/* line 71, ../sass/03b.sass */
+.category- {
+  background-color: #333333;
+}
+
+/* line 73, ../sass/03b.sass */
+.category-japanese {
+  background-color: #ff7997;
+}
+
+/* line 75, ../sass/03b.sass */
+.category-coffee-shop {
+  background-color: #ff6e40;
+}
+
+/* line 77, ../sass/03b.sass */
+.category-flower-shop {
+  background-color: #7c4dff;
+}
+
+/* line 79, ../sass/03b.sass */
+.category-park {
+  background-color: #5af158;
+}
+
+/* line 81, ../sass/03b.sass */
+.category-latin-american {
+  background-color: #ff7997;
+}
+
+/* line 83, ../sass/03b.sass */
+.category-café {
+  background-color: #ff6e40;
+}
+
+/* line 85, ../sass/03b.sass */
+.category-market {
+  background-color: #7c4dff;
+}
+
+/* line 87, ../sass/03b.sass */
+.category-hardware {
+  background-color: #7c4dff;
+}
+
+/* line 89, ../sass/03b.sass */
+.category-dog-run {
+  background-color: #5af158;
+}
+
+/* line 91, ../sass/03b.sass */
+.category-dive-bar {
+  background-color: #e040fb;
+}
+
+/* line 93, ../sass/03b.sass */
+.category-bar {
+  background-color: #e040fb;
+}
+
+/* line 95, ../sass/03b.sass */
+.category-electronics {
+  background-color: #7c4dff;
+}
+
+/* line 97, ../sass/03b.sass */
+.category-german {
+  background-color: #ff7997;
+}
+
+/* line 99, ../sass/03b.sass */
+.category-salon-barbershop {
+  background-color: #7c4dff;
+}
+
+/* line 101, ../sass/03b.sass */
+.category-farmers-market {
+  background-color: #7c4dff;
+}
+
+/* line 103, ../sass/03b.sass */
+.category-historic-site {
+  background-color: #5af158;
+}
+
+/* line 105, ../sass/03b.sass */
+.category-grocery-store {
+  background-color: #7c4dff;
+}
+
+/* line 107, ../sass/03b.sass */
+.category-desserts {
+  background-color: #ff7997;
+}
+
+/* line 109, ../sass/03b.sass */
+.category-sandwiches {
+  background-color: #ff7997;
+}
+
+/* line 111, ../sass/03b.sass */
+.category-animal-shelter {
+  background-color: #7c4dff;
+}
+
+/* line 113, ../sass/03b.sass */
+.category-thai {
+  background-color: #ff7997;
+}
+
+/* line 115, ../sass/03b.sass */
+.category-light-rail {
+  background-color: #6889ff;
+}
+
+/* line 117, ../sass/03b.sass */
+.category-street {
+  background-color: #5af158;
+}
+
+/* line 119, ../sass/03b.sass */
+.category-landmark {
+  background-color: #5af158;
+}
+
+/* line 121, ../sass/03b.sass */
+.category-trail {
+  background-color: #5af158;
+}
+
+/* line 123, ../sass/03b.sass */
+.category-science-museum {
+  background-color: #eeff41;
+}
+
+/* line 125, ../sass/03b.sass */
+.category-diner {
+  background-color: #ff7997;
+}
+
+/* line 127, ../sass/03b.sass */
+.category-pet-service {
+  background-color: #7c4dff;
+}
+
+/* line 129, ../sass/03b.sass */
+.category-apparel {
+  background-color: #7c4dff;
+}
+
+/* line 131, ../sass/03b.sass */
+.category-food-truck {
+  background-color: #ff7997;
+}
+
+/* line 133, ../sass/03b.sass */
+.category-sculpture {
+  background-color: #5af158;
+}
+
+/* line 135, ../sass/03b.sass */
+.category-vegetarian-vegan {
+  background-color: #ff7997;
+}
+
+/* line 137, ../sass/03b.sass */
+.category-bakery {
+  background-color: #ff7997;
+}
+
+/* line 139, ../sass/03b.sass */
+.category-office {
+  background-color: #eeeeee;
+}
+
+/* line 141, ../sass/03b.sass */
+.category-event-space {
+  background-color: #eeeeee;
+}
+
+/* line 143, ../sass/03b.sass */
+.category-other-outdoors {
+  background-color: #5af158;
+}
+
+/* line 145, ../sass/03b.sass */
+.category-beach {
+  background-color: #5af158;
+}
+
+/* line 147, ../sass/03b.sass */
+.category-fast-food {
+  background-color: #ff7997;
+}
+
+/* line 149, ../sass/03b.sass */
+.category-surf-spot {
+  background-color: #5af158;
+}
+
+/* line 151, ../sass/03b.sass */
+.category-church {
+  background-color: #5af158;
+}
+
+/* line 153, ../sass/03b.sass */
+.category-beer-store {
+  background-color: #7c4dff;
+}
+
+/* line 155, ../sass/03b.sass */
+.category-playground {
+  background-color: #5af158;
+}
+
+/* line 157, ../sass/03b.sass */
+.category-asian {
+  background-color: #ff7997;
+}
+
+/* line 159, ../sass/03b.sass */
+.category-rental-car {
+  background-color: #7c4dff;
+}
+
+/* line 161, ../sass/03b.sass */
+.category-entertainment {
+  background-color: #eeff41;
+}
+
+/* line 163, ../sass/03b.sass */
+.category-arts-and-crafts {
+  background-color: #7c4dff;
+}
+
+/* line 165, ../sass/03b.sass */
+.category-restaurant {
+  background-color: #ff7997;
+}
+
+/* line 167, ../sass/03b.sass */
+.category-pizza {
+  background-color: #ff7997;
+}
+
+/* line 169, ../sass/03b.sass */
+.category-thrift-vintage {
+  background-color: #7c4dff;
+}
+
+/* line 171, ../sass/03b.sass */
+.category-beer-garden {
+  background-color: #e040fb;
+}
+
+/* line 173, ../sass/03b.sass */
+.category-garden {
+  background-color: #5af158;
+}
+
+/* line 175, ../sass/03b.sass */
+.category-garden-center {
+  background-color: #7c4dff;
+}
+
+/* line 177, ../sass/03b.sass */
+.category-scenic-lookout {
+  background-color: #5af158;
+}
+
+/* line 179, ../sass/03b.sass */
+.category-airport {
+  background-color: #6889ff;
+}
+
+/* line 181, ../sass/03b.sass */
+.category-mexican {
+  background-color: #ff7997;
+}
+
+/* line 183, ../sass/03b.sass */
+.category-cupcakes {
+  background-color: #ff7997;
+}
+
+/* line 185, ../sass/03b.sass */
+.category-ice-cream {
+  background-color: #ff7997;
+}
+
+/* line 187, ../sass/03b.sass */
+.category-field {
+  background-color: #5af158;
+}
+
+/* line 189, ../sass/03b.sass */
+.category-cocktail {
+  background-color: #e040fb;
+}
+
+/* line 191, ../sass/03b.sass */
+.category-mountain {
+  background-color: #5af158;
+}
+
+/* line 193, ../sass/03b.sass */
+.category-burritos {
+  background-color: #ff7997;
+}
+
+/* line 195, ../sass/03b.sass */
+.category-bridge {
+  background-color: #5af158;
+}
+
+/* line 197, ../sass/03b.sass */
+.category-sushi {
+  background-color: #ff7997;
+}
+
+/* line 199, ../sass/03b.sass */
+.category-american {
+  background-color: #ff7997;
+}
+
+/* line 201, ../sass/03b.sass */
+.category-supermarket {
+  background-color: #7c4dff;
+}
+
+/* line 203, ../sass/03b.sass */
+.category-home {
+  background-color: #ffd740;
+}
+
+/* line 205, ../sass/03b.sass */
+.category-hospital {
+  background-color: #7c4dff;
+}
+
+/* line 207, ../sass/03b.sass */
+.category-new-american {
+  background-color: #ff7997;
+}
+
+/* line 209, ../sass/03b.sass */
+.category-indian {
+  background-color: #ff7997;
+}
+
+/* line 211, ../sass/03b.sass */
+.category-furniture-home {
+  background-color: #7c4dff;
+}
+
+/* line 213, ../sass/03b.sass */
+.category-tech-startup {
+  background-color: #eeeeee;
+}
+
+/* line 215, ../sass/03b.sass */
+.category-veterinarians {
+  background-color: #7c4dff;
+}
+
+/* line 217, ../sass/03b.sass */
+.category-pet-store {
+  background-color: #7c4dff;
+}
+
+/* line 219, ../sass/03b.sass */
+.category-festival {
+  background-color: #eeff41;
+}
+
+/* line 221, ../sass/03b.sass */
+.category-gastropub {
+  background-color: #ff7997;
+}
+
+/* line 223, ../sass/03b.sass */
+.category-subway {
+  background-color: #6889ff;
+}
+
+/* line 225, ../sass/03b.sass */
+.category-art-museum {
+  background-color: #eeff41;
+}
+
+/* line 227, ../sass/03b.sass */
+.category-vietnamese {
+  background-color: #ff7997;
+}
+
+/* line 229, ../sass/03b.sass */
+.category-donuts {
+  background-color: #ff7997;
+}
+
+/* line 231, ../sass/03b.sass */
+.category-hot-dogs {
+  background-color: #ff7997;
+}
+
+/* line 233, ../sass/03b.sass */
+.category-bike-shop {
+  background-color: #7c4dff;
+}
+
+/* line 235, ../sass/03b.sass */
+.category-movie-theater {
+  background-color: #eeff41;
+}
+
+/* line 237, ../sass/03b.sass */
+.category-indie-theater {
+  background-color: #eeff41;
+}
+
+/* line 239, ../sass/03b.sass */
+.category-sporting-goods {
+  background-color: #7c4dff;
+}
+
+/* line 241, ../sass/03b.sass */
+.category-seafood {
+  background-color: #ff7997;
+}
+
+/* line 243, ../sass/03b.sass */
+.category-post-office {
+  background-color: #7c4dff;
+}
+
+/* line 245, ../sass/03b.sass */
+.category-neighborhood {
+  background-color: #5af158;
+}
+
+/* line 247, ../sass/03b.sass */
+.category-art-gallery {
+  background-color: #eeff41;
+}
+
+/* line 249, ../sass/03b.sass */
+.category-gas-station-garage {
+  background-color: #7c4dff;
+}
+
+/* line 251, ../sass/03b.sass */
+.category-shoes {
+  background-color: #7c4dff;
+}
+
+/* line 253, ../sass/03b.sass */
+.category-city {
+  background-color: #5af158;
+}
+
+/* line 255, ../sass/03b.sass */
+.category-motel {
+  background-color: #7c4dff;
+}
+
+/* line 257, ../sass/03b.sass */
+.category-rest-areas {
+  background-color: #6889ff;
+}
+
+/* line 259, ../sass/03b.sass */
+.category-pool {
+  background-color: #5af158;
+}
+
+/* line 261, ../sass/03b.sass */
+.category-burgers {
+  background-color: #ff7997;
+}
+
+/* line 263, ../sass/03b.sass */
+.category-plaza {
+  background-color: #5af158;
+}
+
+/* line 265, ../sass/03b.sass */
+.category-hotel {
+  background-color: #7c4dff;
+}
+
+/* line 267, ../sass/03b.sass */
+.category-university {
+  background-color: #eeeeee;
+}
+
+/* line 269, ../sass/03b.sass */
+.category-bus {
+  background-color: #6889ff;
+}
+
+/* line 271, ../sass/03b.sass */
+.category-bagels {
+  background-color: #ff7997;
+}
+
+/* line 273, ../sass/03b.sass */
+.category-sports-bar {
+  background-color: #e040fb;
+}
+
+/* line 275, ../sass/03b.sass */
+.category-department-store {
+  background-color: #7c4dff;
+}
+
+/* line 277, ../sass/03b.sass */
+.category-bowling-alley {
+  background-color: #7c4dff;
+}
+
+/* line 279, ../sass/03b.sass */
+.category-bus-station {
+  background-color: #6889ff;
+}
+
+/* line 281, ../sass/03b.sass */
+.category-bank {
+  background-color: #7c4dff;
+}
+
+/* line 283, ../sass/03b.sass */
+.category-travel {
+  background-color: #6889ff;
+}
+
+/* line 285, ../sass/03b.sass */
+.category-building {
+  background-color: #ffd740;
+}
+
+/* line 287, ../sass/03b.sass */
+.category-brewery {
+  background-color: #e040fb;
+}
+
+/* line 289, ../sass/03b.sass */
+.category-dim-sum {
+  background-color: #ff7997;
+}
+
+/* line 291, ../sass/03b.sass */
+.category-whisky-bar {
+  background-color: #e040fb;
+}
+
+/* line 293, ../sass/03b.sass */
+.category-salad {
+  background-color: #ff7997;
+}
+
+/* line 295, ../sass/03b.sass */
+.category-accessories {
+  background-color: #7c4dff;
+}
+
+/* line 297, ../sass/03b.sass */
+.category-italian {
+  background-color: #ff7997;
+}
+
+/* line 299, ../sass/03b.sass */
+.category-racetrack {
+  background-color: #5af158;
+}
+
+/* line 301, ../sass/03b.sass */
+.category-lake {
+  background-color: #5af158;
+}
+
+/* line 303, ../sass/03b.sass */
+.category-arcade {
+  background-color: #7c4dff;
+}
+
+/* line 305, ../sass/03b.sass */
+.category-tacos {
+  background-color: #ff7997;
+}
+
+/* line 307, ../sass/03b.sass */
+.category-golf-course {
+  background-color: #5af158;
+}
+
+/* line 309, ../sass/03b.sass */
+.category-parking {
+  background-color: #6889ff;
+}
+
+/* line 311, ../sass/03b.sass */
+.category-candy-store {
+  background-color: #7c4dff;
+}
+
+/* line 313, ../sass/03b.sass */
+.category-camera-store {
+  background-color: #7c4dff;
+}
+
+/* line 315, ../sass/03b.sass */
+.category-yoga-studio {
+  background-color: #7c4dff;
+}
+
+/* line 317, ../sass/03b.sass */
+.category-convenience-stores {
+  background-color: #7c4dff;
+}
+
+/* line 319, ../sass/03b.sass */
+.category-gift-shop {
+  background-color: #7c4dff;
+}
+
+/* line 321, ../sass/03b.sass */
+.category-belgian {
+  background-color: #ff7997;
+}
+
+/* line 323, ../sass/03b.sass */
+.category-tea-room {
+  background-color: #ff6e40;
+}
+
+/* line 325, ../sass/03b.sass */
+.category-deli-bodega {
+  background-color: #ff7997;
+}
+
+/* line 327, ../sass/03b.sass */
+.category-chinese {
+  background-color: #ff7997;
+}
+
+/* line 329, ../sass/03b.sass */
+.category-toys-and-games {
+  background-color: #7c4dff;
+}
+
+/* line 331, ../sass/03b.sass */
+.category-performing-arts {
+  background-color: #eeff41;
+}
+
+/* line 333, ../sass/03b.sass */
+.category-cemetery {
+  background-color: #5af158;
+}
+
+/* line 335, ../sass/03b.sass */
+.category-juice-bar {
+  background-color: #ff7997;
+}
+
+/* line 337, ../sass/03b.sass */
+.category-pub {
+  background-color: #e040fb;
+}
+
+/* line 339, ../sass/03b.sass */
+.category-frozen-yogurt {
+  background-color: #ff7997;
+}
+
+/* line 341, ../sass/03b.sass */
+.category-wine-bar {
+  background-color: #e040fb;
+}
+
+/* line 343, ../sass/03b.sass */
+.category-planetarium {
+  background-color: #eeff41;
+}
+
+/* line 345, ../sass/03b.sass */
+.category-residential {
+  background-color: #ffd740;
+}
+
+/* line 347, ../sass/03b.sass */
+.category-speakeasy {
+  background-color: #e040fb;
+}
+
+/* line 349, ../sass/03b.sass */
+.category-liquor-store {
+  background-color: #7c4dff;
+}
+
+/* line 351, ../sass/03b.sass */
+.category-tennis-court {
+  background-color: #5af158;
+}
+
+/* line 353, ../sass/03b.sass */
+.category-flea-market {
+  background-color: #7c4dff;
+}
+
+/* line 355, ../sass/03b.sass */
+.category-nightlife {
+  background-color: #e040fb;
+}
+
+/* line 357, ../sass/03b.sass */
+.category-bus-stop {
+  background-color: #6889ff;
+}
+
+/* line 359, ../sass/03b.sass */
+.category-gourmet {
+  background-color: #ff7997;
+}
+
+/* line 361, ../sass/03b.sass */
+.category-breakfast {
+  background-color: #ff7997;
+}
+
+/* line 363, ../sass/03b.sass */
+.category-nightclub {
+  background-color: #e040fb;
+}
+
+/* line 365, ../sass/03b.sass */
+.category-bike {
+  background-color: #6889ff;
+}
+
+/* line 367, ../sass/03b.sass */
+.category-smoke-shop {
+  background-color: #7c4dff;
+}
+
+/* line 369, ../sass/03b.sass */
+.category-record-shop {
+  background-color: #7c4dff;
+}
+
+/* line 371, ../sass/03b.sass */
+.category-theater {
+  background-color: #eeff41;
+}
+
+/* line 373, ../sass/03b.sass */
+.category-moroccan {
+  background-color: #ff7997;
+}
+
+/* line 375, ../sass/03b.sass */
+.category-lighthouse {
+  background-color: #5af158;
+}
+
+/* line 377, ../sass/03b.sass */
+.category-road {
+  background-color: #6889ff;
+}
+
+/* line 379, ../sass/03b.sass */
+.category-laundry {
+  background-color: #7c4dff;
+}
+
+/* line 381, ../sass/03b.sass */
+.category-shop {
+  background-color: #7c4dff;
+}
+
+/* line 383, ../sass/03b.sass */
+.category-museum {
+  background-color: #eeff41;
+}
+
+/* line 385, ../sass/03b.sass */
+.category-national-park {
+  background-color: #5af158;
+}
+
+/* line 387, ../sass/03b.sass */
+.category-tourist-information {
+  background-color: #eeeeee;
+}
+
+/* line 389, ../sass/03b.sass */
+.category-rock-club {
+  background-color: #eeff41;
+}
+
+/* line 391, ../sass/03b.sass */
+.category-jazz-club {
+  background-color: #eeff41;
+}
+
+/* line 393, ../sass/03b.sass */
+.category-southern-soul {
+  background-color: #ff7997;
+}
+
+/* line 395, ../sass/03b.sass */
+.category-b-and-b {
+  background-color: #ffd740;
+}
+
+/* line 397, ../sass/03b.sass */
+.category-zoo {
+  background-color: #5af158;
+}
+
+/* line 399, ../sass/03b.sass */
+.category-cajun-creole {
+  background-color: #ff7997;
+}
+
+/* line 401, ../sass/03b.sass */
+.category-government {
+  background-color: #eeeeee;
+}
+
+/* line 403, ../sass/03b.sass */
+.category-french {
+  background-color: #ff7997;
+}
+
+/* line 405, ../sass/03b.sass */
+.category-library {
+  background-color: #eeff41;
+}
+
+/* line 407, ../sass/03b.sass */
+.category-theme-park {
+  background-color: #eeff41;
+}
+
+/* line 409, ../sass/03b.sass */
+.category-disc-golf {
+  background-color: #5af158;
+}
+
+/* line 411, ../sass/03b.sass */
+.category-casino {
+  background-color: #eeff41;
+}
+
+/* line 413, ../sass/03b.sass */
+.category-basketball {
+  background-color: #5af158;
+}
+
+/* line 415, ../sass/03b.sass */
+.category-spiritual {
+  background-color: #eeff41;
+}
+
+/* line 417, ../sass/03b.sass */
+.category-train-station {
+  background-color: #6889ff;
+}
+
+/* line 419, ../sass/03b.sass */
+.category-pharmacy {
+  background-color: #7c4dff;
+}
+
+/* line 421, ../sass/03b.sass */
+.category-karaoke {
+  background-color: #e040fb;
+}
+
+/* line 423, ../sass/03b.sass */
+.category-football {
+  background-color: #5af158;
+}
+
+/* line 425, ../sass/03b.sass */
+.category-cineplex {
+  background-color: #eeff41;
+}
+
+/* line 427, ../sass/03b.sass */
+.category-music-venue {
+  background-color: #eeff41;
+}
+
+/* line 429, ../sass/03b.sass */
+.category-gay-bar {
+  background-color: #e040fb;
+}
+
+/* line 431, ../sass/03b.sass */
+.category-scandinavian {
+  background-color: #ff7997;
+}
+
+/* line 433, ../sass/03b.sass */
+.category-other-event {
+  background-color: #eeff41;
+}
+
+/* line 435, ../sass/03b.sass */
+.category-harbor-marina {
+  background-color: #5af158;
+}
+
+/* line 437, ../sass/03b.sass */
+.category-ethiopian {
+  background-color: #ff7997;
+}
+
+/* line 439, ../sass/03b.sass */
+.category-food-and-drink {
+  background-color: #ff7997;
+}
+
+/* line 441, ../sass/03b.sass */
+.category-taxi {
+  background-color: #6889ff;
+}
+
+/* line 443, ../sass/03b.sass */
+.category-food-court {
+  background-color: #ff7997;
+}
+
+/* line 445, ../sass/03b.sass */
+.category-mall {
+  background-color: #7c4dff;
+}
+
+/* line 447, ../sass/03b.sass */
+.category-baseball {
+  background-color: #5af158;
+}
+
+/* line 449, ../sass/03b.sass */
+.category-boat-ferry {
+  background-color: #6889ff;
+}
+
+/* line 451, ../sass/03b.sass */
+.category-print-shop {
+  background-color: #7c4dff;
+}
+
+/* line 453, ../sass/03b.sass */
+.category-antiques {
+  background-color: #7c4dff;
+}
+
+/* line 455, ../sass/03b.sass */
+.category-spa {
+  background-color: #7c4dff;
+}
+
+/* line 457, ../sass/03b.sass */
+.category-bookstore {
+  background-color: #7c4dff;
+}
+
+/* line 459, ../sass/03b.sass */
+.category-office-supplies {
+  background-color: #7c4dff;
+}
+
+/* line 461, ../sass/03b.sass */
+.category-roof-deck {
+  background-color: #ffd740;
+}
+
+/* line 463, ../sass/03b.sass */
+.category-hostel {
+  background-color: #ffd740;
+}
+
+/* line 465, ../sass/03b.sass */
+.category-korean {
+  background-color: #ff7997;
+}
+
+/* line 467, ../sass/03b.sass */
+.category-opera-house {
+  background-color: #eeff41;
+}
+
+/* line 469, ../sass/03b.sass */
+.category-coworking-space {
+  background-color: #eeeeee;
+}
+
+/* line 471, ../sass/03b.sass */
+.category-high-school {
+  background-color: #eeeeee;
+}
+
+/* line 473, ../sass/03b.sass */
+.category-administrative-building {
+  background-color: #eeeeee;
+}
+
+/* line 475, ../sass/03b.sass */
+.category-city-hall {
+  background-color: #eeeeee;
+}
+
+/* line 477, ../sass/03b.sass */
+.category-automotive {
+  background-color: #7c4dff;
+}
+
+/* line 479, ../sass/03b.sass */
+.category-mongolian {
+  background-color: #ff7997;
+}
+
+/* line 481, ../sass/03b.sass */
+.category-convention-center {
+  background-color: #eeeeee;
+}
+
+/* line 483, ../sass/03b.sass */
+.category-meeting-room {
+  background-color: #eeeeee;
+}
+
+/* line 485, ../sass/03b.sass */
+.category-lounge {
+  background-color: #e040fb;
+}
+
+/* line 487, ../sass/03b.sass */
+.category-soup {
+  background-color: #ff7997;
+}
+
+/* line 489, ../sass/03b.sass */
+.category-quad {
+  background-color: #5af158;
+}
+
+/* line 491, ../sass/03b.sass */
+.category-ramen-noodles {
+  background-color: #ff7997;
+}
+
+/* line 493, ../sass/03b.sass */
+.category-factory {
+  background-color: #eeeeee;
+}
+
+/* line 495, ../sass/03b.sass */
+.category-track {
+  background-color: #5af158;
+}
+
+/* line 497, ../sass/03b.sass */
+.category-academic-building {
+  background-color: #eeeeee;
+}
+
+/* line 499, ../sass/03b.sass */
+.category-mediterranean {
+  background-color: #ff7997;
+}
+
+/* line 501, ../sass/03b.sass */
+.category-community-college {
+  background-color: #eeeeee;
+}
+
+/* line 503, ../sass/03b.sass */
+.category-pier {
+  background-color: #5af158;
+}
+
+/* line 505, ../sass/03b.sass */
+.category-organic-grocery {
+  background-color: #7c4dff;
+}
+
+/* line 507, ../sass/03b.sass */
+.category-lab {
+  background-color: #eeeeee;
+}
+
+/* line 509, ../sass/03b.sass */
+.category-gym {
+  background-color: #7c4dff;
+}
+
+/* line 511, ../sass/03b.sass */
+.category-african {
+  background-color: #ff7997;
+}
+
+/* line 513, ../sass/03b.sass */
+.category-design {
+  background-color: #7c4dff;
+}
+
+/* line 515, ../sass/03b.sass */
+.category-afghan {
+  background-color: #ff7997;
+}
+
+/* line 517, ../sass/03b.sass */
+.category-terminal {
+  background-color: #6889ff;
+}
+
+/* line 519, ../sass/03b.sass */
+.category-history-museum {
+  background-color: #eeff41;
+}
+
+/* line 521, ../sass/03b.sass */
+.category-concert-hall {
+  background-color: #eeff41;
+}
+
+/* line 523, ../sass/03b.sass */
+.category-resort {
+  background-color: #6889ff;
+}
+
+/* line 525, ../sass/03b.sass */
+.category-plane {
+  background-color: #6889ff;
+}
+
+/* line 527, ../sass/03b.sass */
+.category-arts {
+  background-color: #eeff41;
+}
+
+/* line 529, ../sass/03b.sass */
+.category-boutique {
+  background-color: #7c4dff;
+}
+
+/* line 531, ../sass/03b.sass */
+.category-board-shop {
+  background-color: #7c4dff;
+}
+
+/* line 533, ../sass/03b.sass */
+.category-music-store {
+  background-color: #7c4dff;
+}
+
+/* line 535, ../sass/03b.sass */
+.category-train {
+  background-color: #6889ff;
+}
+
+/* line 537, ../sass/03b.sass */
+.category-capitol-building {
+  background-color: #eeeeee;
+}
+
+/* line 539, ../sass/03b.sass */
+.category-residence-hall {
+  background-color: #ffd740;
+}
+
+/* line 541, ../sass/03b.sass */
+.category-irish {
+  background-color: #ff7997;
+}
+
+/* line 543, ../sass/03b.sass */
+.category-farm {
+  background-color: #5af158;
+}
+
+/* line 545, ../sass/03b.sass */
+.category-eastern-european {
+  background-color: #ff7997;
+}
+
+/* line 547, ../sass/03b.sass */
+.category-hotel-bar {
+  background-color: #e040fb;
+}
+
+/* line 549, ../sass/03b.sass */
+.category-lingerie {
+  background-color: #7c4dff;
+}
+
+/* line 551, ../sass/03b.sass */
+.category-botanical-garden {
+  background-color: #5af158;
+}
+
+/* line 553, ../sass/03b.sass */
+.category-wine-shop {
+  background-color: #7c4dff;
+}
+
+/* line 555, ../sass/03b.sass */
+.category-greek {
+  background-color: #ff7997;
+}
