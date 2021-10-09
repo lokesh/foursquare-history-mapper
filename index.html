@@ -14,7 +14,7 @@
       padding: 0;
       margin: 0;
       font: 400 normal 16px/1.5 "Roboto", Helvetica, Arial, sans-serif;
-      /*background-color: #061218;*/
+      background-color: #061218;
     }
 
     .connect-button {
@@ -33,14 +33,24 @@
       display: block;
       float: left;
       padding: 0.5em 0.8em;
-      margin: 2px;
+      margin: 1px;
       line-height: 1em;
       color: white;
       background-color: #263238;
-      font-weight: 900;
-      text-transform: uppercase;
+      font-weight: 600;
+      /*text-transform: uppercase;*/
       -webkit-font-smoothing: antialiased;
     }
+
+    .count {
+      font-size: 12px;
+      color: #0f9;
+/*      background: #000;
+      border-radius: 3px;
+      padding: 3px;
+*/
+    }
+
   </style>
 
 </head>
@@ -54,21 +64,23 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
   <script src="//d3js.org/d3.v3.min.js"></script>
-  <script src="js/config.js"></script>
-
+  
   <script type="text/template" id="template">
     <ul class="checkins">
         <% _.each(data, function(checkin){ %>
-          <% var fontSize = Math.min(80, (checkin.beenHereCount * 4) + 14) %>
-          <li class="checkin" style="font-size: <%- fontSize %>px">
-            <%- checkin.name %>
+          <li class="checkin">
+            <span class="count"><%- checkin.count %></span>
+            <%- checkin.name %> <br />
+            <span style="font-size: 11px; color: #999;"><%- date = new Date(checkin.createdAt * 1000).toLocaleDateString("en-US") %><br />
+            <%- checkin.formattedAddress %></span>
           </li>
       <% }); %>
     </ul>
   </script>
 
 
-  <script>
+  <script type="module">
+    import { CLIENT_ID } from './js/config.js';
 
     // ------------------------
     // Datastore
@@ -88,9 +100,9 @@
     var authParams = {
       'client_id': CLIENT_ID,
       'response_type': 'token',
-      'redirect_uri': 'http://localhost:8000/foursquare-simple-chart.html'
+      'redirect_uri': 'http://localhost:8000/index.html'
     };
-    var authURL      = 'https://foursquare.com/oauth2/authenticate?' + $.param(authParams);
+    var authURL = 'https://foursquare.com/oauth2/authenticate?' + $.param(authParams);
 
     var checkinsURL                = 'https://api.foursquare.com/v2/users/self/checkins';
     var CHECKINS_LIMIT_PER_REQUEST = 250;
@@ -124,6 +136,8 @@
     // ------------------------
 
 
+    // If access token exists in URL, show the fetch button,
+    // otherwise show the connect button.
     function checkForToken() {
       if (window.location.hash.indexOf('#access_token=') !== -1) {
         token = window.location.hash.replace('#access_token=','');
@@ -135,7 +149,7 @@
 
     function fetchCheckins(offset) {
       offset = (typeof offset === "undefined") ? 0: offset;
-
+      console.log('fetching');
       return $.ajax({
         type: 'GET',
         url: checkinsURL,
@@ -148,27 +162,38 @@
       })
       .done(function (data, textStatus, jqXHR) {
         var items = data.response.checkins.items;
+        
         items = _.map(items, function(item){
           if (_.isUndefined(item.venue)) {
             return false;
           }
           return {
             'id': item.id,
+            'venueId': item.venue.id,
+            'name': item.venue.name,
+            'lat': item.venue.location.lat,
+            'lng': item.venue.location.lng,
             'address': item.venue.location.address + ' ' +
                        item.venue.location.city + ' ' +
                        item.venue.location.state + ' ' +
                        item.venue.location.country,
-            'beenHereCount': item.venue.beenHere.count,
+            'formattedAddress': item.venue.location.formattedAddress,
+            'categoryId': (item.venue.categories[0] ? item.venue.categories[0].id: ''),
             'category': (item.venue.categories[0] ? item.venue.categories[0].shortName: ''),
             'createdAt': item.createdAt,
-            'checkinsCount': item.venue.stats.checkinsCount,
-            'lat': item.venue.location.lat,
-            'lng': item.venue.location.lng,
-            'name': item.venue.name,
-            'usersCount': item.venue.stats.usersCount,
-            'verified': item.venue.verified
+            'isMayor': item.isMayor,
+
+            // all user checkins counted, not just mine
+            // 'checkinsCount': item.venue.stats.checkinsCount,
+            
+            // all users who have check-in
+            // 'usersCount': item.venue.stats.usersCount,
+            
+            // 'verified': item.venue.verified
           };
         });
+
+        // TODO: Move filter before
         items = _.filter(items, function(item) {
           return item !== false;
         });
@@ -187,13 +212,53 @@
     }
 
 
+    // Checkin data includes every check-in. So if you checked in 20 times
+    // at the Beehive, you'll see 20 items in the data.
+    // 
     function dedupeVenues() {
-      checkins = _.map(checkins, function(checkin){
-        return _.pick(checkin, 'name', 'beenHereCount');
+      
+      /*
+        counts = {
+          venueId: 2,
+          venueId: 23,
+          ...
+        }
+       */
+      let counts = _.countBy(checkins, function(checkin) {
+        return checkin.venueId;
       });
 
+      // Dedupe checkins
+      // TODO: keep date data 
       checkins = _.uniq(checkins, function(checkin, key, a) { 
-          return checkin.name;
+          return checkin.venueId;
+      });
+
+      checkins = checkins.map(checkin => {
+        return {
+          ...checkin,
+          count: counts[checkin.venueId],
+        };
+
+      });
+
+      // Newer is first
+      checkins = checkins.sort((a, b) => {
+        return (a.createdAt >= b.createdAt) ? -1 : 1;
+      })
+    }
+
+    function cleanUpData() {
+      checkins = checkins.map((venue) => {
+        return {
+          name: venue.name,
+          address: venue.formattedAddress,
+          lat: venue.lat,
+          lng: venue.lng,
+          category: venue.category,
+          createdAt: venue.createdAt,
+          count: venue.count,
+        };
       });
     }
 
@@ -211,6 +276,8 @@
       checkForToken();
     } else {
       dedupeVenues();
+      cleanUpData();
+      console.log(checkins);
       renderList();
     }
 
