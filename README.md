@@ -8,3 +8,6 @@ To refetch check-in data, clear ``checkins` from localstorage.
 ### API Docs
 
 - https://foursquare.com/developers/explore#req=users%2Fself%2Fcheckins
+
+
+test
