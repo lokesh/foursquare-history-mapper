@@ -2,8 +2,10 @@
   "name": "foursquare-mapper",
   "version": "1.0.0",
   "description": "1. Create a ```config.js``` file which set a var CLIENT_ID with the value of your Foursquare API Client Id. 2. Setup a local httpserver. I use: ```python -m SimpleHTTPServer```",
-  "main": "index.js",
+  "exports": "./index.js",
+  "type": "module",
   "scripts": {
+    "fetch": "node ./fetch.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,6 +20,10 @@
   "homepage": "https://github.com/lokesh/foursquare-mapper#readme",
   "dependencies": {
     "jquery": "^3.6.0",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "node-fetch": "^3.2.6"
+  },
+  "engines": {
+    "node": ">=14.16"
   }
 }
