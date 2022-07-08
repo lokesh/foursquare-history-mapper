@@ -5,6 +5,7 @@
   "exports": "./index.js",
   "type": "module",
   "scripts": {
+    "dev": "http-server -o index.html",
     "fetch": "node ./fetch.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -19,8 +20,8 @@
   },
   "homepage": "https://github.com/lokesh/foursquare-mapper#readme",
   "dependencies": {
-    "jquery": "^3.6.0",
-    "lodash": "^4.17.21",
+    "dat-gui-vue": "^1.0.2",
+    "http-server": "^14.1.1",
     "node-fetch": "^3.2.6"
   },
   "engines": {

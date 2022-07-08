@@ -10,8 +10,8 @@ import { resolve } from 'path';
 // Testing
 // -------
 
-const FETCH_DATA = true; // Hit Foursquare API
-const PROCESS_DATA = true; // Add subcategory, firstVisit, lastVisit
+const FETCH_DATA = false; // Hit Foursquare API
+const PROCESS_DATA = true; // Convert checkins to venues, add count, strip extras
 
 // ------------------------
 // API Auth and Config
@@ -33,13 +33,13 @@ const VENUES_FILE_PATH = resolve(process.cwd(), 'data/places.json');
 
 
 if (!FETCH_DATA) {
-  console.log('🟡 [Foursquare] Fetching data disabled');
+  console.log('🟡 Fetching data disabled');
 } else {
-  console.log('🕐 [Foursquare] Refreshing data');
+  console.log('🕐 Refreshing data');
 }
 
 if (!PROCESS_DATA) {
-  console.log('🟡 [Foursquare] Data processing disabled');
+  console.log('🟡 Data processing disabled');
 }
 
 
@@ -480,7 +480,7 @@ async function main() {
     }
 
     fs.writeFileSync(CHECKINS_FILE_PATH, JSON.stringify(checkins, null, 2));
-    console.log('✅ [Foursquare] Data refreshed');
+    console.log('✅ Data refreshed');
   } else {
     const data = fs.readFileSync(CHECKINS_FILE_PATH);
     checkins = JSON.parse(data);
@@ -491,7 +491,7 @@ async function main() {
 
     // Checkins to venues
     let venues = checkinsToVenues(checkins);
-    console.log(`✅ [Foursquare]: Data processed`);
+    console.log(`✅ Data processed`);
 
     // Output file
     fs.writeFileSync(VENUES_FILE_PATH, JSON.stringify(venues, null, 2));      

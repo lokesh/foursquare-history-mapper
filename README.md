@@ -1,10 +1,10 @@
 # Places & Spaces
 
-
 ## To-do
 
 **Debug**
-- [ ] Create floating UI
+- [ ] Create floating UI (Vue?)
+
 Params
 - [ ] Geo boundary
 - [ ] Grid size
@@ -14,10 +14,10 @@ Params
 **Fetch & persist**
 - [x] Fetch data from Foursquare Places API
 - [x] Convert check-ins to venues
-- [ ] Strip data down to essentials: name, lat, lng, city, state, country, category, subcategory
-- [ ] Add counts
-- [ ] Sort by counts
-- [ ] Save data to JSON file
+- [x] Strip data down to essentials: name, lat, lng, city, state, country, category, subcategory
+- [x] Add counts
+- [x] Sort by counts
+- [x] Save data to JSON file
 
 **Filtering**
 - [ ] ? Manually filter un-interesting entries

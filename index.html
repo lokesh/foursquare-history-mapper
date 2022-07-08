@@ -8,26 +8,128 @@
 
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
-  <link href="//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900,100italic,300italic,400italic,500italic,700italic,900italic" rel="stylesheet">
+<!--   <link href="//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900,100italic,300italic,400italic,500italic,700italic,900italic" rel="stylesheet"> -->
+  
   <style>
     body {
       padding: 0;
       margin: 0;
       font: 400 normal 16px/1.5 "Roboto", Helvetica, Arial, sans-serif;
-      background-color: #061218;
     }
 
+    .vue-dat-gui {
+      width: 320px !important;
+    }
   
   </style>
+
+<script src="https://unpkg.com/vue@2.6.10/dist/vue.js"></script>
+<script src="https://unpkg.com/@cyrilf/vue-dat-gui@latest/dist/vue-dat-gui.umd.min.js"></script>
 
 </head>
 <body>
 
-  <script type="module">
+<div id="app">
+  Hi world<br />
 
-    console.log('hi');
+  <dat-gui>
+    <dat-number v-model="minVisitCount" label="Min visit count"></dat-number>
+    <dat-number v-model="cols" label="Rows/Cols"></dat-number>
+    <dat-number v-model="boundaryTopLeft" label="Top left bound"></dat-number>
+    <dat-number v-model="boundaryBottomRight" label="Bottom right bound"></dat-number>
+    <dat-color v-model="colorBg" label="Background"></dat-color>
+    <dat-color v-model="colorLabel" label="Label color"></dat-color>
+    
+    <!-- <dat-string v-model="title" label="Title"/>
+    <dat-button @click="triggerAlert" label="Trigger alert"/>
+    <dat-folder label="Picture">
+      <dat-select v-model="pictureUrl" :items="pictures" label="Picture"/>
+      <dat-boolean v-model="showPicture" label="Show Picture"/>
+      <dat-button @click="nextPicture" label="Next picture"/>
+      <dat-folder label="Box shadow">
+        <dat-number v-model="boxShadow.offsetX" :min="-100" :max="100" :step="1" label="Offset X"/>
+        <dat-number v-model="boxShadow.offsetY" :min="-100" :max="100" :step="1" label="Offset Y"/>
+        <dat-number v-model="boxShadow.blurRadius" :min="0" :max="100" :step="1" label="Blur radius"/>
+        <dat-number v-model="boxShadow.spreadRadius" :min="0" :max="30" :step="1" label="Spread radius"/>
+        <dat-color v-model="boxShadow.color" label="Color"/>
+      </dat-folder>
+    </dat-folder>-->
+  </dat-gui>
 
-  </script>
+
+</div>
+
+<script type="module">
+
+var app = new Vue({
+  el: '#app',
+
+  data() {
+    return {
+      boundaryTopLeft: '',
+      boundaryBottomRight: '',
+      cols: 24,
+      minVisitCount: 24,
+      colorBg: '#fff',
+      colorLabel: '#000',
+    };
+  },
+
+  // computed: {
+  //   flatRuns() {
+  //     return this.runs.filter(run => {
+  //       return (run.elevation / run.distance) < MAX_ELEVATION_PER_MILE;
+  //     })
+  //   },
+  // },
+
+  created() {
+    // fetch('/data/strava-activities-edited-runs.json')
+    //   .then(res => res.json())
+    //   .then(data => {
+    //     this.runs = data;
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   })
+  },
+
+//   methods: {
+//     getPaceColor(pace) {
+//       let paceColor;
+//       if (pace > 8) {
+//         paceColor = '#FCA469';
+//       } else if (pace > 7.27) {
+//         paceColor = '#F6DC58';
+//       } else {
+//         paceColor = '#58DF82';
+//       }
+//       return paceColor;
+//     },
+//     getTransition(index) {
+//       return (index < 40) ? `transition: all 0.5s ${(index + 5) * 0.05}s`: '';
+//     },
+//     hasComment(id) {
+//       return this.comments.hasOwnProperty(id);
+//     }
+//   }
+});
+
+  // async function loadData() {
+  //   const resp = await fetch('./data/places.json');
+  //   const json = await resp.json();
+  //   return json;
+  // }
+
+
+  // async function main() {
+  //   const places = await loadData();
+  //   console.log(places);
+  // }
+
+  // main();
+
+</script>
 
 
   
