@@ -1,15 +1,32 @@
 # Places & Spaces
 
+SF
+- top left: 37.812616, -122.532549
+- bottom right: 37.719854, -122.340741
+
+https://boundingbox.klokantech.com/
+
 ## To-do
 
 **Debug**
-- [ ] Create floating UI (Vue?)
+- [x] Create floating UI (Vue?)
 
 Params
 - [ ] Geo boundary
 - [ ] Grid size
 - [ ] Min visit count
 - [ ] Color schemes
+
+**Filtering**
+- [ ] ? Manually filter un-interesting entries
+
+**Utils**
+- [ ] func: Filter by geo-rect
+- [ ] func: Filter by city, state, country
+- [ ] func: determine land type, water or land. 
+
+**Map**
+- [ ] ? Can I determine what is the make of a rect? e.g. 50% forest, 20% developed.
 
 **Fetch & persist**
 - [x] Fetch data from Foursquare Places API
@@ -18,17 +35,6 @@ Params
 - [x] Add counts
 - [x] Sort by counts
 - [x] Save data to JSON file
-
-**Filtering**
-- [ ] ? Manually filter un-interesting entries
-
-**Utils**
-- [ ] func: Filter by geo-rect
-- [ ] func: determine land type, water or land. 
-
-**Map**
-- [ ] ? Can I determine what is the make of a rect? e.g. 50% forest, 20% developed.
-- [ ] 
 
 
 **Style**
@@ -42,6 +48,8 @@ Params
 To refetch check-in data, clear ``checkins` from localstorage.
 
 ## Architecture 
+
+vue-dat-gui
 
 ### 1. Fetching data
 

@@ -8,38 +8,51 @@
 
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
-<!--   <link href="//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900,100italic,300italic,400italic,500italic,700italic,900italic" rel="stylesheet"> -->
-  
   <style>
     body {
       padding: 0;
       margin: 0;
-      font: 400 normal 16px/1.5 "Roboto", Helvetica, Arial, sans-serif;
+      font: 400 normal 16px/1.5 "Berkeley Mono", Roboto, Helvetica, Arial, sans-serif;
     }
 
     .vue-dat-gui {
       width: 320px !important;
-    }
-  
-  </style>
+    }  
 
-<script src="https://unpkg.com/vue@2.6.10/dist/vue.js"></script>
-<script src="https://unpkg.com/@cyrilf/vue-dat-gui@latest/dist/vue-dat-gui.umd.min.js"></script>
+    .debug {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 320px;
+      padding: 4px;
+      font-size:  10px;
+      color: #fff;
+      background: #222;
+    }
+  </style>
 
 </head>
 <body>
 
 <div id="app">
-  Hi world<br />
+
+  <div class="debug">
+    Count: {{ places.length }}<br />
+    Bounding Box: {{ r(boxTopLeft.lat) }}, {{ r(boxTopLeft.lng) }} TO {{ r(boxBottomRight.lat) }}, {{ r(boxBottomRight.lng) }}
+  </div>
 
   <dat-gui>
     <dat-number v-model="minVisitCount" label="Min visit count"></dat-number>
     <dat-number v-model="cols" label="Rows/Cols"></dat-number>
-    <dat-number v-model="boundaryTopLeft" label="Top left bound"></dat-number>
-    <dat-number v-model="boundaryBottomRight" label="Bottom right bound"></dat-number>
-    <dat-color v-model="colorBg" label="Background"></dat-color>
-    <dat-color v-model="colorLabel" label="Label color"></dat-color>
-    
+    <dat-folder label="Geo">
+      <dat-select v-model="area" :items="areaSelectOptions"  label="Areas" @change="onAreaChange" /></dat-folder>
+      <!-- <dat-number v-model="boxTopLeft" label="Top left bound"></dat-number>
+      <dat-number v-model="boxBottomRight" label="Bottom right bound"></dat-number> -->
+    </dat-folder>
+    <dat-folder label="Style">
+      <dat-color v-model="colorBg" label="Background"></dat-color>
+      <dat-color v-model="colorLabel" label="Label color"></dat-color>
+    </dat-folder>
     <!-- <dat-string v-model="title" label="Title"/>
     <dat-button @click="triggerAlert" label="Trigger alert"/>
     <dat-folder label="Picture">
@@ -59,76 +72,99 @@
 
 </div>
 
+<script src="https://unpkg.com/vue@2.6.10/dist/vue.js"></script>
+<script src="https://unpkg.com/@cyrilf/vue-dat-gui@latest/dist/vue-dat-gui.umd.min.js"></script>
+
+
 <script type="module">
+import {
+  filterPlacesByBoundingBox,
+  getBoundingBox,
+} from './utils/geo.js';
+
+const round = (num) => Number(num).toFixed(2);
+
+const AREA_OPTIONS = {
+  'San Francisco': {    
+    city: 'San Francisco',
+    state: 'CA',
+    country: 'United States',
+  },
+  'California': {
+    state: 'CA',
+    country: 'United States',
+  },        
+  'United States': {
+    country: 'United States',
+  }
+};
+
+const areaSelectOptions = Object.keys(AREA_OPTIONS).map(opt => {
+  return {
+    name: opt,
+    value: opt,
+  }
+})
+
+// -122.524027,37.711959,-122.373359,37.81578
+
+// value: {
+//   state: 'California',
+//   country: 'United States',
+// },
+// -124.48,32.53,-114.13,42.01
+
 
 var app = new Vue({
   el: '#app',
 
   data() {
     return {
-      boundaryTopLeft: '',
-      boundaryBottomRight: '',
+      places: [],
+      placesUnfiltered: [],
+
+      boxTopLeft: { lat: 0, lng: 0 },
+      boxBottomRight: { lat: 0, lng: 0 },
+
       cols: 24,
       minVisitCount: 24,
       colorBg: '#fff',
       colorLabel: '#000',
+      areaSelectOptions,
+      area: '',
+
+      // Helper funcs
+      r: round,
     };
   },
 
-  // computed: {
-  //   flatRuns() {
-  //     return this.runs.filter(run => {
-  //       return (run.elevation / run.distance) < MAX_ELEVATION_PER_MILE;
-  //     })
-  //   },
-  // },
-
-  created() {
-    // fetch('/data/strava-activities-edited-runs.json')
-    //   .then(res => res.json())
-    //   .then(data => {
-    //     this.runs = data;
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   })
+  async created() {
+    const resp = await fetch('./data/places.json');
+    const json = await resp.json();
+    this.places = this.placesUnfiltered = json;
   },
 
-//   methods: {
-//     getPaceColor(pace) {
-//       let paceColor;
-//       if (pace > 8) {
-//         paceColor = '#FCA469';
-//       } else if (pace > 7.27) {
-//         paceColor = '#F6DC58';
-//       } else {
-//         paceColor = '#58DF82';
-//       }
-//       return paceColor;
-//     },
-//     getTransition(index) {
-//       return (index < 40) ? `transition: all 0.5s ${(index + 5) * 0.05}s`: '';
-//     },
-//     hasComment(id) {
-//       return this.comments.hasOwnProperty(id);
-//     }
-//   }
+  watch: {
+    places(val, oldVal) {
+      const box = getBoundingBox(val);
+      this.boxTopLeft = box[0];
+      this.boxBottomRight = box[1];
+    },
+  },
+
+  methods: {
+    onAreaChange(val) {
+      const opt = AREA_OPTIONS[val];
+
+      this.places = this.placesUnfiltered.filter(place => {
+        if (opt.city && place.city !== opt.city) return false;
+        if (opt.state && place.state !== opt.state) return false;
+        if (opt.country && place.country !== opt.country) return false;
+        return true;
+      });
+    }
+  }
 });
-
-  // async function loadData() {
-  //   const resp = await fetch('./data/places.json');
-  //   const json = await resp.json();
-  //   return json;
-  // }
-
-
-  // async function main() {
-  //   const places = await loadData();
-  //   console.log(places);
-  // }
-
-  // main();
-
 </script>
 
 
