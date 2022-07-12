@@ -10,9 +10,12 @@
 
   <style>
     body {
+      overflow: hidden;
       padding: 0;
       margin: 0;
-      font: 400 normal 16px/1.5 "Berkeley Mono", Roboto, Helvetica, Arial, sans-serif;
+      font: 12px "Berkeley Mono", monospace;
+      color: #222;
+      background: #f7f7f7;
     }
 
     .vue-dat-gui {
@@ -21,13 +24,17 @@
 
     .debug {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 320px;
+      bottom: 0;
+      right: 0;
+      width: 400px;
       padding: 4px;
-      font-size:  10px;
-      color: #fff;
+      font-size:  12px;
+      color: #f7f7f7;
       background: #222;
+    }
+
+    canvas {
+      background: #ddd;
     }
   </style>
 
@@ -38,34 +45,37 @@
 
   <div class="debug">
     Count: {{ places.length }}<br />
-    Bounding Box: {{ r(boxTopLeft.lat) }}, {{ r(boxTopLeft.lng) }} TO {{ r(boxBottomRight.lat) }}, {{ r(boxBottomRight.lng) }}
+    City: {{ city }}<br />
+    State: {{ state }}<br />
+    Country: {{ country }}<br />
+    Bounding Box: {{ r(boxTopLeft.lat) }}, {{ r(boxTopLeft.lng) }} --- {{ r(boxBottomRight.lat) }}, {{ r(boxBottomRight.lng) }}<br />
+    Lat height: {{ r(boxTopLeft.lat - boxBottomRight.lat) }}<br />
+    Lng width: {{ r(boxBottomRight.lng - boxTopLeft.lng) }} <br />
   </div>
 
+  <canvas id="canvas" ref="canvas"></canvas>
+
+  <!-- <pre>
+    {{ places }}
+  </pre> -->
+
   <dat-gui>
-    <dat-number v-model="minVisitCount" label="Min visit count"></dat-number>
-    <dat-number v-model="cols" label="Rows/Cols"></dat-number>
-    <dat-folder label="Geo">
-      <dat-select v-model="area" :items="areaSelectOptions"  label="Areas" @change="onAreaChange" /></dat-folder>
+    <dat-folder label="Places">
+      <dat-number v-model="minVisitCount" label="Min visit count"></dat-number>
+      <dat-select v-model="area" :items="areaSelectOptions"  label="Area" @change="onAreaChange" /></dat-folder>
       <!-- <dat-number v-model="boxTopLeft" label="Top left bound"></dat-number>
       <dat-number v-model="boxBottomRight" label="Bottom right bound"></dat-number> -->
     </dat-folder>
     <dat-folder label="Style">
+      <dat-number v-model="rows" label="Rows" :max="4800"></dat-number>
+      <dat-number v-model="cols" label="Cols" :max="4800"></dat-number>
       <dat-color v-model="colorBg" label="Background"></dat-color>
       <dat-color v-model="colorLabel" label="Label color"></dat-color>
     </dat-folder>
+    <dat-button @click="draw" label="Draw"></dat-button>
     <!-- <dat-string v-model="title" label="Title"/>
-    <dat-button @click="triggerAlert" label="Trigger alert"/>
-    <dat-folder label="Picture">
-      <dat-select v-model="pictureUrl" :items="pictures" label="Picture"/>
       <dat-boolean v-model="showPicture" label="Show Picture"/>
       <dat-button @click="nextPicture" label="Next picture"/>
-      <dat-folder label="Box shadow">
-        <dat-number v-model="boxShadow.offsetX" :min="-100" :max="100" :step="1" label="Offset X"/>
-        <dat-number v-model="boxShadow.offsetY" :min="-100" :max="100" :step="1" label="Offset Y"/>
-        <dat-number v-model="boxShadow.blurRadius" :min="0" :max="100" :step="1" label="Blur radius"/>
-        <dat-number v-model="boxShadow.spreadRadius" :min="0" :max="30" :step="1" label="Spread radius"/>
-        <dat-color v-model="boxShadow.color" label="Color"/>
-      </dat-folder>
     </dat-folder>-->
   </dat-gui>
 
@@ -77,14 +87,18 @@
 
 
 <script type="module">
+import { Canvas } from './classes/Canvas.js';
 import {
   filterPlacesByBoundingBox,
   getBoundingBox,
 } from './utils/geo.js';
+import { random } from './utils/math.js';
+
 
 const round = (num) => Number(num).toFixed(2);
 
 const AREA_OPTIONS = {
+  'World': { },
   'San Francisco': {    
     city: 'San Francisco',
     state: 'CA',
@@ -104,7 +118,7 @@ const areaSelectOptions = Object.keys(AREA_OPTIONS).map(opt => {
     name: opt,
     value: opt,
   }
-})
+});
 
 // -122.524027,37.711959,-122.373359,37.81578
 
@@ -115,23 +129,54 @@ const areaSelectOptions = Object.keys(AREA_OPTIONS).map(opt => {
 // -124.48,32.53,-114.13,42.01
 
 
-var app = new Vue({
+const CANVAS_WIDTH = 600;
+const CANVAS_HEIGHT = 600;
+
+// const PALETTE = [
+//   "#62B1F7", // blue
+//   "#E8AB47", // yellow
+//   "#D84062", // red
+//   "#F6EEF1" // off white
+// ];
+
+const PALETTE = [
+  "#000",
+];
+
+const CATEGORY_PALETTE = {
+  Arts: '#eb0054',
+  Coffee: 'd90',
+  Dessert: 'f39',
+  Food: '#07e',
+  Nightlife: '#f0c',
+  Outdoors: '#090',
+  Shop: '000',
+}
+
+
+const app = new Vue({
   el: '#app',
 
   data() {
     return {
-      places: [],
+      grid: [],
       placesUnfiltered: [],
 
       boxTopLeft: { lat: 0, lng: 0 },
       boxBottomRight: { lat: 0, lng: 0 },
 
-      cols: 24,
-      minVisitCount: 24,
+      rows: 300,
+      cols: 300,
+
+      minVisitCount: 1,
       colorBg: '#fff',
       colorLabel: '#000',
       areaSelectOptions,
-      area: '',
+      area: 'World',
+
+      city: '',
+      state: '',
+      country: '',
 
       // Helper funcs
       r: round,
@@ -139,29 +184,143 @@ var app = new Vue({
   },
 
   async created() {
+    this.createGrid()
+    
     const resp = await fetch('./data/places.json');
     const json = await resp.json();
-    this.places = this.placesUnfiltered = json;
+    this.placesUnfiltered = json;
+  },
+
+  mounted() {
+    this.canvas = new Canvas(this.$refs.canvas, CANVAS_WIDTH, CANVAS_HEIGHT);
+    this.ctx = this.canvas.ctx;
   },
 
   watch: {
+    cols() {
+      this.createGrid()
+      this.populateGrid();
+      this.draw();
+    },
+
     places(val, oldVal) {
       const box = getBoundingBox(val);
       this.boxTopLeft = box[0];
       this.boxBottomRight = box[1];
+
+      this.createGrid()
+      this.populateGrid();
+      this.draw();
+    },
+
+    rows() {
+      this.createGrid()
+      this.populateGrid();
+      this.draw();
+    },
+
+  },
+
+  computed: {
+    latHeight() {
+      return (this.boxTopLeft.lat - this.boxBottomRight.lat) / this.rows;
+    },
+
+    lngWidth() {
+      return (this.boxBottomRight.lng - this.boxTopLeft.lng) / this.cols;
+    },
+      
+    places() {
+      let places = this.placesUnfiltered;
+      places = this.filterByCount(places, this.minVisitCount);
+      places = this.filterByLocale(places, this.city, this.state, this.country);
+      return places;
     },
   },
 
-  methods: {
-    onAreaChange(val) {
-      const opt = AREA_OPTIONS[val];
+  methods: {    
+    
+    /**
+     * Create empty grid (rows x cols)
+     */
+    createGrid() {
+      let grid = new Array(this.rows);
+      
+      for (let i = 0; i < this.rows; i++) {
+        grid[i] = new Array(this.cols);
+      }
+      
+      this.grid = grid;
+    },
 
-      this.places = this.placesUnfiltered.filter(place => {
-        if (opt.city && place.city !== opt.city) return false;
-        if (opt.state && place.state !== opt.state) return false;
-        if (opt.country && place.country !== opt.country) return false;
+    draw() {
+      this.ctx.fillStyle = '#999';
+      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+      let colWidth = this.canvas.width / this.cols;
+      let rowHeight = this.canvas.height / this.rows;
+      for (let row = 0; row < this.rows; row++) {
+        for (let col = 0; col < this.cols; col++) {
+          let place = this.grid[row][col];
+          if (place) {
+            let color = CATEGORY_PALETTE[place.category]
+            // console.log(color, place.category, CATEGORY_PALETTE)
+            this.ctx.fillStyle = color ? color : 'red';
+          } else {
+            this.ctx.fillStyle = '#fff';    
+          }
+          this.ctx.fillRect(col * colWidth, row * rowHeight, colWidth, rowHeight)
+        }
+      }
+    },
+
+    filterByCount(places, count) {
+      return places.filter(place => place.count >= count);
+    },
+
+    filterByLocale(places, city, state, country) {
+      return places.filter(place => {
+        if (city && place.city !== city) return false;
+        if (state && place.state !== state) return false;
+        if (country && place.country !== country) return false;
         return true;
       });
+    },
+
+    gridLookup(lat, lng) {
+      // BUG: row val was going out of bounds. Patched a stopgap fix with Math.min()
+      let row = Math.min(Math.floor((this.boxTopLeft.lat - lat) / this.latHeight), this.rows - 1);
+      let col = Math.floor((lng - this.boxTopLeft.lng) / this.lngWidth);
+      return [row, col];
+    },
+
+    onAreaChange(val) {
+      const { city, state, country } = AREA_OPTIONS[val];
+      this.city = city;
+      this.state = state;
+      this.country = country;
+    },
+
+    /**
+     * Create empty grid (rows x cols)
+     */
+    populateGrid() {
+
+      this.places.forEach(place => {
+        console.log(place.venue)
+        let index = this.gridLookup(place.lat, place.lng);
+        let row = index[0];
+        let col = index[1];
+        if (!this.grid[row][col]) {
+          this.grid[row][col] = place;
+        }
+      })
+
+      // Go through each place
+
+        // Which grid square should place be dropped in to?
+
+        // If square is already taken, what is the closest? optionally limit how far away it can be
     }
   }
 });

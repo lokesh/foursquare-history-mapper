@@ -63,6 +63,5 @@ export function getBoundingBox(places) {
       }
     }
   })
-
   return box;
 }

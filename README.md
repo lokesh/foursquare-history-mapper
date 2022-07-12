@@ -12,20 +12,21 @@ https://boundingbox.klokantech.com/
 - [x] Create floating UI (Vue?)
 
 Params
-- [ ] Geo boundary
-- [ ] Grid size
-- [ ] Min visit count
+- [x] Geo boundary
+- [x] Grid size
+- [x] Min visit count
 - [ ] Color schemes
 
 **Filtering**
 - [ ] ? Manually filter un-interesting entries
 
 **Utils**
-- [ ] func: Filter by geo-rect
-- [ ] func: Filter by city, state, country
+- [x] func: Filter by geo-rect
+- [x] func: Filter by city, state, country
 - [ ] func: determine land type, water or land. 
 
 **Map**
+- [x] Create grid - Bounding box of items (no padding to start) divided by rows/cols
 - [ ] ? Can I determine what is the make of a rect? e.g. 50% forest, 20% developed.
 
 **Fetch & persist**
@@ -38,7 +39,7 @@ Params
 
 
 **Style**
-
+- [ ] Padding outside of bounding box or gen box manually
 
 ## Getting started
 
