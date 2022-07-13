@@ -48,9 +48,9 @@
     City: {{ city }}<br />
     State: {{ state }}<br />
     Country: {{ country }}<br />
-    Bounding Box: {{ r(boxTopLeft.lat) }}, {{ r(boxTopLeft.lng) }} --- {{ r(boxBottomRight.lat) }}, {{ r(boxBottomRight.lng) }}<br />
-    Lat height: {{ r(boxTopLeft.lat - boxBottomRight.lat) }}<br />
-    Lng width: {{ r(boxBottomRight.lng - boxTopLeft.lng) }} <br />
+    Bounding Box: {{ r(box[0].lat) }}, {{ r(box[0].lng) }} --- {{ r(box[1].lat) }}, {{ r(box[1].lng) }}<br />
+    Lat height: {{ r(box[0].lat - box[1].lat) }}<br />
+    Lng width: {{ r(box[1].lng - box[0].lng) }} <br />
   </div>
 
   <canvas id="canvas" ref="canvas"></canvas>
@@ -89,7 +89,7 @@
 <script type="module">
 import { Canvas } from './classes/Canvas.js';
 import {
-  filterPlacesByBoundingBox,
+  filterByBoundingBox,
   getBoundingBox,
 } from './utils/geo.js';
 import { random } from './utils/math.js';
@@ -98,12 +98,14 @@ import { random } from './utils/math.js';
 const round = (num) => Number(num).toFixed(2);
 
 const AREA_OPTIONS = {
-  'World': { },
-  'San Francisco': {    
-    city: 'San Francisco',
-    state: 'CA',
-    country: 'United States',
-  },
+  'World': [{ lat: 90, lng: -180 },{ lat: -90, lng: 180 }],
+  'San Francisco': [{
+    lat: 37.819001,
+    lng: -122.539621,
+  }, {
+    lat: 37.678933,
+    lng: -122.344968,
+  }],
   'California': {
     state: 'CA',
     country: 'United States',
@@ -120,24 +122,8 @@ const areaSelectOptions = Object.keys(AREA_OPTIONS).map(opt => {
   }
 });
 
-// -122.524027,37.711959,-122.373359,37.81578
-
-// value: {
-//   state: 'California',
-//   country: 'United States',
-// },
-// -124.48,32.53,-114.13,42.01
-
-
-const CANVAS_WIDTH = 600;
-const CANVAS_HEIGHT = 600;
-
-// const PALETTE = [
-//   "#62B1F7", // blue
-//   "#E8AB47", // yellow
-//   "#D84062", // red
-//   "#F6EEF1" // off white
-// ];
+const CANVAS_WIDTH = 1200;
+const CANVAS_HEIGHT = 1200;
 
 const PALETTE = [
   "#000",
@@ -150,9 +136,8 @@ const CATEGORY_PALETTE = {
   Food: '#07e',
   Nightlife: '#f0c',
   Outdoors: '#090',
-  Shop: '000',
+  Shop: '#fff',
 }
-
 
 const app = new Vue({
   el: '#app',
@@ -162,17 +147,22 @@ const app = new Vue({
       grid: [],
       placesUnfiltered: [],
 
-      boxTopLeft: { lat: 0, lng: 0 },
-      boxBottomRight: { lat: 0, lng: 0 },
+      box: [{
+        lat: 37.819001,
+        lng: -122.539621,
+      }, {
+        lat: 37.678933,
+        lng: -122.344968,
+      }],
 
-      rows: 300,
-      cols: 300,
+      rows: 40,
+      cols: 40,
 
-      minVisitCount: 1,
+      minVisitCount: 10,
       colorBg: '#fff',
       colorLabel: '#000',
       areaSelectOptions,
-      area: 'World',
+      area: 'San Francisco',
 
       city: '',
       state: '',
@@ -198,42 +188,33 @@ const app = new Vue({
 
   watch: {
     cols() {
-      this.createGrid()
-      this.populateGrid();
-      this.draw();
+      this.refresh();
     },
 
     places(val, oldVal) {
-      const box = getBoundingBox(val);
-      this.boxTopLeft = box[0];
-      this.boxBottomRight = box[1];
-
-      this.createGrid()
-      this.populateGrid();
-      this.draw();
+      this.refresh();
     },
 
     rows() {
-      this.createGrid()
-      this.populateGrid();
-      this.draw();
+      this.refresh();
     },
-
   },
 
   computed: {
     latHeight() {
-      return (this.boxTopLeft.lat - this.boxBottomRight.lat) / this.rows;
+      return (this.box[0].lat - this.box[1].lat) / this.rows;
     },
 
     lngWidth() {
-      return (this.boxBottomRight.lng - this.boxTopLeft.lng) / this.cols;
+      return (this.box[1].lng - this.box[0].lng) / this.cols;
     },
       
     places() {
       let places = this.placesUnfiltered;
       places = this.filterByCount(places, this.minVisitCount);
-      places = this.filterByLocale(places, this.city, this.state, this.country);
+      places = filterByBoundingBox(places, this.box);
+      //   this.boxTopLeft,
+      // });
       return places;
     },
   },
@@ -264,12 +245,23 @@ const app = new Vue({
           let place = this.grid[row][col];
           if (place) {
             let color = CATEGORY_PALETTE[place.category]
-            // console.log(color, place.category, CATEGORY_PALETTE)
             this.ctx.fillStyle = color ? color : 'red';
+
+            let x = col * colWidth;
+            let y = row * rowHeight;
+
+            // Draw box
+            this.ctx.fillRect(x, y, colWidth, rowHeight)
+
+            this.ctx.font = '11px Menlo';
+            this.ctx.fillStyle = '#000';
+            this.ctx.fillText(place.venue.substr(0, 5), x, y + rowHeight);
+
           } else {
             this.ctx.fillStyle = '#fff';    
           }
-          this.ctx.fillRect(col * colWidth, row * rowHeight, colWidth, rowHeight)
+
+
         }
       }
     },
@@ -289,25 +281,23 @@ const app = new Vue({
 
     gridLookup(lat, lng) {
       // BUG: row val was going out of bounds. Patched a stopgap fix with Math.min()
-      let row = Math.min(Math.floor((this.boxTopLeft.lat - lat) / this.latHeight), this.rows - 1);
-      let col = Math.floor((lng - this.boxTopLeft.lng) / this.lngWidth);
+      let row = Math.min(Math.floor((this.box[0].lat - lat) / this.latHeight), this.rows - 1);
+      let col = Math.floor((lng - this.box[0].lng) / this.lngWidth);
       return [row, col];
     },
 
     onAreaChange(val) {
-      const { city, state, country } = AREA_OPTIONS[val];
-      this.city = city;
-      this.state = state;
-      this.country = country;
+      this.box = AREA_OPTIONS[val];
+      // this.city = city;
+      // this.state = state;
+      // this.country = country;
     },
 
     /**
      * Create empty grid (rows x cols)
      */
     populateGrid() {
-
       this.places.forEach(place => {
-        console.log(place.venue)
         let index = this.gridLookup(place.lat, place.lng);
         let row = index[0];
         let col = index[1];
@@ -318,9 +308,15 @@ const app = new Vue({
 
       // Go through each place
 
-        // Which grid square should place be dropped in to?
+      // Which grid square should place be dropped in to?
 
-        // If square is already taken, what is the closest? optionally limit how far away it can be
+      // If square is already taken, what is the closest? optionally limit how far away it can be
+    },
+
+    refresh() {
+      this.createGrid()
+      this.populateGrid();
+      this.draw();
     }
   }
 });

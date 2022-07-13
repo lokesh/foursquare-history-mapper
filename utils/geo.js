@@ -13,14 +13,13 @@
  * @param  {[Object]} box [{ lat: -10, lng: 45 }, { lat: -5, lng: 40 }],
  * @return {[Object]} filtered places
  */
-export function filterPlacesByBoundingBox(places, box) {
-  
-  return places.filter(item => {
+export function filterByBoundingBox(places, box) {
+  return places.filter(place => {
     return (
-      places.lat <= topLeft.lat
-      && places.lat >= bottomRight.lat
-      && places.lng >= topLeft.lng
-      && places.lng <= bottomRight.lng
+      place.lat <= box[0].lat
+      && place.lat >= box[1].lat
+      && place.lng >= box[0].lng
+      && place.lng <= box[1].lng
       ); 
   });
 }

@@ -1,5 +1,19 @@
 # Places & Spaces
 
+- 
+
+
+minVisitCount
+- filter places
+
+box
+- filter places
+
+if places change
+- create grid
+- pop grid
+- draw
+
 SF
 - top left: 37.812616, -122.532549
 - bottom right: 37.719854, -122.340741
@@ -10,6 +24,7 @@ https://boundingbox.klokantech.com/
 
 **Debug**
 - [x] Create floating UI (Vue?)
+- [ ] Only set one dimension of canvas, and have aspect ratio match bounding box.
 
 Params
 - [x] Geo boundary
