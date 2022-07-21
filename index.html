@@ -45,6 +45,7 @@
 
   <div class="debug">
     Count: {{ places.length }}<br />
+    Draw Count: {{ gridItemsCount }}<br />
     City: {{ city }}<br />
     State: {{ state }}<br />
     Country: {{ country }}<br />
@@ -66,13 +67,17 @@
       <!-- <dat-number v-model="boxTopLeft" label="Top left bound"></dat-number>
       <dat-number v-model="boxBottomRight" label="Bottom right bound"></dat-number> -->
     </dat-folder>
-    <dat-folder label="Style">
+
+    <dat-folder label="Grid">
       <dat-number v-model="rows" label="Rows" :max="4800"></dat-number>
       <dat-number v-model="cols" label="Cols" :max="4800"></dat-number>
+      <dat-number v-model="maxDist" label="Placement max dist" :max="20"></dat-number>
+      <dat-boolean v-model="showGrid" label="Show grid"></dat-boolean>
+    </dat-folder>
+    <dat-folder label="Style">
       <dat-color v-model="colorBg" label="Background"></dat-color>
       <dat-color v-model="colorLabel" label="Label color"></dat-color>
     </dat-folder>
-    <dat-button @click="draw" label="Draw"></dat-button>
     <!-- <dat-string v-model="title" label="Title"/>
       <dat-boolean v-model="showPicture" label="Show Picture"/>
       <dat-button @click="nextPicture" label="Next picture"/>
@@ -131,8 +136,8 @@ const PALETTE = [
 
 const CATEGORY_PALETTE = {
   Arts: '#eb0054',
-  Coffee: 'd90',
-  Dessert: 'f39',
+  Coffee: '#d90',
+  Dessert: '#f39',
   Food: '#07e',
   Nightlife: '#f0c',
   Outdoors: '#090',
@@ -155,10 +160,12 @@ const app = new Vue({
         lng: -122.344968,
       }],
 
-      rows: 40,
-      cols: 40,
+      rows: 30,
+      cols: 30,
+      maxDist: 2,
+      showGrid: false,
 
-      minVisitCount: 10,
+      minVisitCount: 40,
       colorBg: '#fff',
       colorLabel: '#000',
       areaSelectOptions,
@@ -191,6 +198,10 @@ const app = new Vue({
       this.refresh();
     },
 
+    maxDist() {
+      this.refresh();
+    },
+
     places(val, oldVal) {
       this.refresh();
     },
@@ -198,9 +209,26 @@ const app = new Vue({
     rows() {
       this.refresh();
     },
+
+    showGrid() {
+      this.refresh();
+    },
   },
 
   computed: {
+    // Debugging purposes only. Consider removing.
+    gridItemsCount() {
+      let count = 0;
+      for (let i = 0; i < this.grid.length; i++) {
+        for (let j = 0; j < this.grid[0].length; j++) {
+          if (this.grid[i][j]) {
+            count++;
+          }
+        }
+      }
+      return count;
+    },
+
     latHeight() {
       return (this.box[0].lat - this.box[1].lat) / this.rows;
     },
@@ -235,7 +263,7 @@ const app = new Vue({
     },
 
     draw() {
-      this.ctx.fillStyle = '#999';
+      this.ctx.fillStyle = '#ddd';
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
       let colWidth = this.canvas.width / this.cols;
@@ -251,17 +279,34 @@ const app = new Vue({
             let y = row * rowHeight;
 
             // Draw box
+            // console.log(place.category, this.ctx.fillStyle);
             this.ctx.fillRect(x, y, colWidth, rowHeight)
 
-            this.ctx.font = '11px Menlo';
-            this.ctx.fillStyle = '#000';
-            this.ctx.fillText(place.venue.substr(0, 5), x, y + rowHeight);
+            this.ctx.font = '8px Menlo';
+            this.ctx.fillStyle = '#000000';
 
+            // let label = place.count;
+            let label = place.venue.substr(0, 6);
+            this.ctx.fillText(label, x, y + rowHeight);
           } else {
-            this.ctx.fillStyle = '#fff';    
+            this.ctx.fillStyle = '#ffffff';    
           }
+        }
+      }
 
+      if (this.showGrid) {
+        this.ctx.font = '8px Menlo';
+        this.ctx.fillStyle = '#444';
+        this.ctx.strokeStyle = '#d3d3d3';
 
+        for (let row = 0; row < this.rows; row++) {
+          for (let col = 0; col < this.cols; col++) {
+            let x = col * colWidth;
+            let y = row * rowHeight;
+            
+            this.ctx.strokeRect(x, y, colWidth, rowHeight);
+            this.ctx.fillText(`${row},${col}`, x, y + 8);
+          }
         }
       }
     },
@@ -281,7 +326,8 @@ const app = new Vue({
 
     gridLookup(lat, lng) {
       // BUG: row val was going out of bounds. Patched a stopgap fix with Math.min()
-      let row = Math.min(Math.floor((this.box[0].lat - lat) / this.latHeight), this.rows - 1);
+      // let row = Math.min(Math.floor((this.box[0].lat - lat) / this.latHeight), this.rows - 1);
+      let row = Math.floor((this.box[0].lat - lat) / this.latHeight);
       let col = Math.floor((lng - this.box[0].lng) / this.lngWidth);
       return [row, col];
     },
@@ -293,6 +339,50 @@ const app = new Vue({
       // this.country = country;
     },
 
+    findNearestOpenSpot(row, col) {
+      if (!this.grid[row][col]) {
+        return [row, col]
+      } 
+
+      // Check boundary
+
+      // How many concentric circles we want to expand out as
+      // we search for open spots
+      let i = 0;
+      let foundSpot = false;
+
+      let newRow;
+      let newCol;
+      
+      while (i < this.maxDist && !foundSpot) {
+      
+      // for (let i = 0; i < MAX_RADIUS; i++) {
+        let nearBySquares = [
+          [row    , col - i], // left
+          [row - i, col    ], // top
+          [row    , col + i], // right
+          [row + i, col    ], // bottom
+          [row - i, col - i], // top left
+          [row - i, col + i], // top right
+          [row + i, col + i], // bottom right
+          [row + i, col - i], // bottom left
+        ]
+
+        let a = nearBySquares.find(index => {
+          newRow = index[0];
+          newCol = index[1];
+
+          if (!this.grid[newRow][newCol]) {
+            foundSpot = true;
+            return true;
+          }
+        });
+
+        i++;
+      }
+      return [newRow, newCol]
+    },
+
     /**
      * Create empty grid (rows x cols)
      */
@@ -301,16 +391,22 @@ const app = new Vue({
         let index = this.gridLookup(place.lat, place.lng);
         let row = index[0];
         let col = index[1];
-        if (!this.grid[row][col]) {
-          this.grid[row][col] = place;
-        }
+
+        let [ openRow, openCol ] = this.findNearestOpenSpot(row, col);
+        // if (row !== openRow || col !== openCol) {
+        //   console.log(`${row}, ${col}`, `${openRow - row}, ${openCol - col} <-- Diff`);
+        // }
+        this.grid[openRow][openCol] = place;
+        
+
+        // this.grid[row][col] = place;
+        
       })
 
-      // Go through each place
+      // What about water?
 
-      // Which grid square should place be dropped in to?
+      // If square is already taken, what is the closest? optionally limit how far away it can be?
 
-      // If square is already taken, what is the closest? optionally limit how far away it can be
     },
 
     refresh() {
