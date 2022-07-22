@@ -44,8 +44,10 @@
 <div id="app">
 
   <div class="debug">
+    Draw cycle: {{ r(drawCycleMS)  }}ms<br />
+    ---<br />
     Count: {{ places.length }}<br />
-    Draw Count: {{ gridItemsCount }}<br />
+    <!-- Draw Count: {{ gridItemsCount }}<br /> -->
     City: {{ city }}<br />
     State: {{ state }}<br />
     Country: {{ country }}<br />
@@ -71,10 +73,11 @@
     <dat-folder label="Grid">
       <dat-number v-model="rows" label="Rows" :max="4800"></dat-number>
       <dat-number v-model="cols" label="Cols" :max="4800"></dat-number>
-      <dat-number v-model="maxDist" label="Placement max dist" :max="20"></dat-number>
+      <dat-number v-model="maxDist" label="Placement max dist" :max="40"></dat-number>
       <dat-boolean v-model="showGrid" label="Show grid"></dat-boolean>
     </dat-folder>
     <dat-folder label="Style">
+      <dat-boolean v-model="drawLabel" label="Labels"></dat-boolean>
       <dat-color v-model="colorBg" label="Background"></dat-color>
       <dat-color v-model="colorLabel" label="Label color"></dat-color>
     </dat-folder>
@@ -101,6 +104,12 @@ import { random } from './utils/math.js';
 
 
 const round = (num) => Number(num).toFixed(2);
+
+
+https://maps.googleapis.com/maps/api/staticmap?size=600x400&markers=icon%3Ahttp%3A%2F%2Fwww.google.com%2Fmapfiles%2Farrow.png%7C37.748967%2C-122.4422945&visible=37.819001%2C-122.539621%7C37.678933%2C-122.344968&key=AIzaSyBg71krPDs22xeMljgyMk0QHmyb9fCV994
+
+37.748967,
+-122.4422945
 
 const AREA_OPTIONS = {
   'World': [{ lat: 90, lng: -180 },{ lat: -90, lng: 180 }],
@@ -135,13 +144,13 @@ const PALETTE = [
 ];
 
 const CATEGORY_PALETTE = {
-  Arts: '#eb0054',
-  Coffee: '#d90',
-  Dessert: '#f39',
-  Food: '#07e',
-  Nightlife: '#f0c',
-  Outdoors: '#090',
-  Shop: '#fff',
+  Arts: '#49e7ec',
+  Coffee: '#ff4f69',
+  Dessert: '#ff4f69',
+  Food: '#ffda45',
+  Nightlife: '#ff8142',
+  Outdoors: '#ffda45',
+  Shop: '#3368dc',
 }
 
 const app = new Vue({
@@ -152,28 +161,27 @@ const app = new Vue({
       grid: [],
       placesUnfiltered: [],
 
-      box: [{
-        lat: 37.819001,
-        lng: -122.539621,
-      }, {
-        lat: 37.678933,
-        lng: -122.344968,
-      }],
+      box: AREA_OPTIONS['San Francisco'],
+      area: 'San Francisco',
 
-      rows: 30,
-      cols: 30,
-      maxDist: 2,
+      rows: 60,
+      cols: 60,
+      maxDist: 4,
       showGrid: false,
 
-      minVisitCount: 40,
-      colorBg: '#fff',
-      colorLabel: '#000',
+      minVisitCount: 2,
+      colorBg: '#000000',
+      drawLabel: false,
+      colorLabel: '#cccccc',
       areaSelectOptions,
-      area: 'San Francisco',
+
 
       city: '',
       state: '',
       country: '',
+
+      // debugging
+      drawCycleMS: 0,
 
       // Helper funcs
       r: round,
@@ -198,6 +206,10 @@ const app = new Vue({
       this.refresh();
     },
 
+    drawLabel() {
+      this.refresh();
+    },
+
     maxDist() {
       this.refresh();
     },
@@ -217,17 +229,17 @@ const app = new Vue({
 
   computed: {
     // Debugging purposes only. Consider removing.
-    gridItemsCount() {
-      let count = 0;
-      for (let i = 0; i < this.grid.length; i++) {
-        for (let j = 0; j < this.grid[0].length; j++) {
-          if (this.grid[i][j]) {
-            count++;
-          }
-        }
-      }
-      return count;
-    },
+    // gridItemsCount() {
+    //   let count = 0;
+    //   for (let i = 0; i < this.grid.length; i++) {
+    //     for (let j = 0; j < this.grid[0].length; j++) {
+    //       if (this.grid[i][j]) {
+    //         count++;
+    //       }
+    //     }
+    //   }
+    //   return count;
+    // },
 
     latHeight() {
       return (this.box[0].lat - this.box[1].lat) / this.rows;
@@ -263,7 +275,7 @@ const app = new Vue({
     },
 
     draw() {
-      this.ctx.fillStyle = '#ddd';
+      this.ctx.fillStyle = this.colorBg;
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
       let colWidth = this.canvas.width / this.cols;
@@ -273,7 +285,7 @@ const app = new Vue({
           let place = this.grid[row][col];
           if (place) {
             let color = CATEGORY_PALETTE[place.category]
-            this.ctx.fillStyle = color ? color : 'red';
+            this.ctx.fillStyle = color ? color : '#dcf5ff';
 
             let x = col * colWidth;
             let y = row * rowHeight;
@@ -286,8 +298,10 @@ const app = new Vue({
             this.ctx.fillStyle = '#000000';
 
             // let label = place.count;
-            let label = place.venue.substr(0, 6);
-            this.ctx.fillText(label, x, y + rowHeight);
+            if (this.drawLabel) {
+              let label = place.venue.substr(0, 6);
+              this.ctx.fillText(label, x, y + rowHeight);
+            }
           } else {
             this.ctx.fillStyle = '#ffffff';    
           }
@@ -334,53 +348,169 @@ const app = new Vue({
 
     onAreaChange(val) {
       this.box = AREA_OPTIONS[val];
-      // this.city = city;
-      // this.state = state;
-      // this.country = country;
+    },
+
+    /**
+     * Has a place already been stored in grid location?
+     */
+    isFilled(row, col) {
+      // Is row/col we are checking out of bounds?
+      if (row < 0
+        || row >= this.rows
+        || col < 0
+        || col >= this.cols) {
+        return false
+      }   
+      
+      return !!this.grid[row][col];
     },
 
     findNearestOpenSpot(row, col) {
-      if (!this.grid[row][col]) {
-        return [row, col]
+      if (!this.isFilled(row, col)) {
+        return [row, col];
       } 
 
       // Check boundary
 
       // How many concentric circles we want to expand out as
       // we search for open spots
-      let i = 0;
+      let i = 1;
       let foundSpot = false;
 
       let newRow;
       let newCol;
       
-      while (i < this.maxDist && !foundSpot) {
-      
-      // for (let i = 0; i < MAX_RADIUS; i++) {
-        let nearBySquares = [
-          [row    , col - i], // left
-          [row - i, col    ], // top
-          [row    , col + i], // right
-          [row + i, col    ], // bottom
-          [row - i, col - i], // top left
-          [row - i, col + i], // top right
-          [row + i, col + i], // bottom right
-          [row + i, col - i], // bottom left
-        ]
+      // randomize cardinal direction?
 
-        let a = nearBySquares.find(index => {
-          newRow = index[0];
-          newCol = index[1];
+      // Loop i till maxDist
+        // North
+        // East
+        // South
+        // West
 
-          if (!this.grid[newRow][newCol]) {
+        // Loop j till < i
+          // North - offset left and right by j
+          // East - offset left and right by j
+          // South - offset left and right by j
+          // West - offset left and right by j
+
+      while (i <= this.maxDist && !foundSpot) {
+        
+        // North
+        if (!this.isFilled(row - i, col)) {
+          foundSpot = true;
+          newRow = row - i;
+          newCol = col;
+        }
+
+        // East
+        if (!this.isFilled(row, col + i)) {
+          foundSpot = true;
+          newRow = row;
+          newCol = col + i;
+        }
+
+        // South
+        if (!this.isFilled(row + i, col)) {
+          foundSpot = true;
+          newRow = row + i;
+          newCol = col;
+        }
+
+        // West
+        if (!this.isFilled(row, col - i)) {
+          foundSpot = true;
+          newRow = row;
+          newCol = col - i;
+        }
+
+        for (let j = 1; j <= i; j++) {
+          // North - offset left and right by j
+          if (!this.isFilled(row - i, col - j)) {
             foundSpot = true;
-            return true;
+            newRow = row - i;
+            newCol = col - j;
+            break;            
           }
-        });
 
-        i++;
+          if (!this.isFilled(row - i, col + j)) {
+            foundSpot = true;
+            newRow = row - i;
+            newCol = col + j;
+            break;            
+          }
+
+          // East - offset left and right by j
+          if (!this.isFilled(row - j, col + i)) {
+            foundSpot = true;
+            newRow = row - j;
+            newCol = col + i;
+            break;            
+          }
+
+          if (!this.isFilled(row + j, col + i)) {
+            foundSpot = true;
+            newRow = row + j;
+            newCol = col + i;
+            break;            
+          }
+
+          // South - offset left and right by j
+          if (!this.isFilled(row + i, col - j)) {
+            foundSpot = true;
+            newRow = row + i;
+            newCol = col - j;
+            break;            
+          }
+
+          if (!this.isFilled(row - i, col + j)) {
+            foundSpot = true;
+            newRow = row + i;
+            newCol = col + j;
+            break;            
+          }
+
+          // West - offset left and right by j
+          if (!this.isFilled(row - j, col - i)) {
+            foundSpot = true;
+            newRow = row - j;
+            newCol = col - i;
+            break;            
+          }
+
+          if (!this.isFilled(row + j, col - i)) {
+            foundSpot = true;
+            newRow = row + j;
+            newCol = col - i;
+            break;            
+          }
+
+
+
+        }
+
+        i++;      
       }
-      return [newRow, newCol]
+
+      //   let a = nearBySquares.find(index => {
+      //     newRow = index[0];
+      //     newCol = index[1];
+
+      //     if (!this.grid[newRow][newCol]) {
+      //       foundSpot = true;
+      //       return true;
+      //     }
+      //   });
+
+      //   i++;
+      // }
+
+      if (foundSpot) {
+        return [newRow, newCol]  
+      } else {
+        return false;
+      }
+      
     },
 
     /**
@@ -391,16 +521,11 @@ const app = new Vue({
         let index = this.gridLookup(place.lat, place.lng);
         let row = index[0];
         let col = index[1];
-
-        let [ openRow, openCol ] = this.findNearestOpenSpot(row, col);
-        // if (row !== openRow || col !== openCol) {
-        //   console.log(`${row}, ${col}`, `${openRow - row}, ${openCol - col} <-- Diff`);
-        // }
-        this.grid[openRow][openCol] = place;
-        
-
-        // this.grid[row][col] = place;
-        
+        let nearest = this.findNearestOpenSpot(row, col);
+        if (nearest) {
+          let [ openRow, openCol ] = nearest;  
+          this.grid[openRow][openCol] = place;
+        }
       })
 
       // What about water?
@@ -410,9 +535,13 @@ const app = new Vue({
     },
 
     refresh() {
+      const start = performance.now(); // returns something like 138.899999998509884, which means 138.9 milliseconds passed
+      
       this.createGrid()
       this.populateGrid();
       this.draw();
+      
+      this.drawCycleMS = performance.now() - start;
     }
   }
 });
