@@ -42,8 +42,6 @@ if (!PROCESS_DATA) {
   console.log('🟡 Data processing disabled');
 }
 
-
-
 function checkinsToVenues(checkins) {
   let venuesObj = {};
 
@@ -67,67 +65,6 @@ function checkinsToVenues(checkins) {
   return sortByCount(venuesArr);
 }
 
-
-/**
- * @return {[Object]} checkins e.g. [{ year: 2010, checkins: [] }, ... ]
- */
-function groupCheckinsByYear(checkins) {
-  let groupsObj = {};
-  let years = [];
-  let groupsArr = [];
-  checkins.forEach(checkin => {
-    if (groupsObj[checkin.year]) {
-      groupsObj[checkin.year].push(checkin);
-    } else {
-      years.push(checkin.year);
-      groupsObj[checkin.year] = [checkin];
-    }
-  })
-
-  years = years.sort((a, b) => {
-    return (a >= b) ? -1 : 1;
-  })
-
-  let prevYear;
-  let yearsLength = years.length;
-  years.forEach((year, i) => {
-    // if prevYear is set and year doesn't equal year - 1
-    // prevYear = 2017
-    // year = 2013
-    // fill in 2016, 2015, 2014
-    
-    // and if not last in index
-    if (prevYear && (i < yearsLength)) {
-      while (prevYear - 1 > year) {
-        prevYear--;
-        groupsArr.push({
-          year: prevYear,
-        })
-      }
-    }
-    groupsArr.push({
-      year,
-      checkins: optimizeDataForDisplay(groupsObj[year])
-    })
-
-    prevYear = year;
-  })
-
-  return groupsArr;
-}
-
-
-function groupedCheckinsToVenues(groupedCheckins) {
-  const groupedVenues = groupedCheckins.map(yearObj => {
-    const { year, checkins } = yearObj;
-    return {
-      year,
-      venues: checkins ? sortByCount(checkinsToVenues(checkins)) : [],
-    };
-  })
-
-  return groupedVenues;
-}
 
 function sortByCount(venues) {
   return venues.sort((a, b) => {
@@ -446,19 +383,6 @@ function simplifyData(checkins) {
       country: item.venue.location.country,
       category: (item.venue.categories[0] ? item.venue.categories[0].shortName: ''),
     }
-  })
-}
-
-/**
- * Remove data unneeded for UI. e.g. year and month, which are needed for grouping
- * but not needed on individual items when passed to the UI
- * @param  {[Object]} items
- * @return {[Object]} items
- */
-function optimizeDataForDisplay(items) {
-  return items.map(item => {
-    const { year, month, lastVisit, ...rest } = item;
-    return rest;
   })
 }
 
