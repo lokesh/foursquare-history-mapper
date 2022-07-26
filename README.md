@@ -1,30 +1,15 @@
 # Places & Spaces
 
-- 
-
-
-minVisitCount
-- filter places
-
-box
-- filter places
-
-if places change
-- create grid
-- pop grid
-- draw
-
-SF
-- top left: 37.812616, -122.532549
-- bottom right: 37.719854, -122.340741
-
-https://boundingbox.klokantech.com/
+- https://maps.googleapis.com/maps/api/staticmap?parameters
+- https://maps.googleapis.com/maps/api/staticmap?size=600x400&markers=icon%3Ahttp%3A%2F%2Fwww.google.com%2Fmapfiles%2Farrow.png%7C37.748967%2C-122.4422945&visible=37.819001%2C-122.539621%7C37.678933%2C-122.344968&key=API_KEY
 
 ## To-do
 
-**Debug**
-- [x] Create floating UI (Vue?)
-- [ ] Only set one dimension of canvas, and have aspect ratio match bounding box.
+**Auto- bounding box, image size**
+- [ ] Calc bounding box aspect ratio. (fiddle with multiplies as needed)
+- [ ] Add imgWidth as debugging var
+- [ ] Use imgWidth with aspect ratio to redraw and resize canvas
+
 
 Params
 - [x] Geo boundary
@@ -44,17 +29,12 @@ Params
 - [x] Create grid - Bounding box of items (no padding to start) divided by rows/cols
 - [ ] ? Can I determine what is the make of a rect? e.g. 50% forest, 20% developed.
 
-**Fetch & persist**
-- [x] Fetch data from Foursquare Places API
-- [x] Convert check-ins to venues
-- [x] Strip data down to essentials: name, lat, lng, city, state, country, category, subcategory
-- [x] Add counts
-- [x] Sort by counts
-- [x] Save data to JSON file
-
-
 **Style**
 - [ ] Padding outside of bounding box or gen box manually
+- [ ] Randomize north, west, east, south
+
+- [ ] 3d perspective??
+
 
 ## Getting started
 
@@ -62,6 +42,14 @@ Params
 2. Setup a local httpserver. I use: ```python -m SimpleHTTPServer```
 
 To refetch check-in data, clear ``checkins` from localstorage.
+
+## Adding a new area option (e.g. San Francisco, New Hampshire)
+
+1. Generate a boundary box using [BoundingBox site](https://boundingbox.klokantech.com/).
+2. Grab the top left and bottom right coords as CSV (e.g. -72.5572,42.6972,-70.5614,45.3058).
+
+...
+
 
 ## Architecture 
 
@@ -73,7 +61,6 @@ We use Foursquare's Places API to gather all check-ins. See `fetch.js`
 
 `npm run fetch`
 
-
 ### 2. Processing data
 
 Check-in data is modified in the following ways:
@@ -81,6 +68,10 @@ Check-in data is modified in the following ways:
 - Check-ins are de-duped into venues
 - `count` property is added which is a count of visits to the venue
 - Custom `category` and `subCategory` properties are added
+
+- `checkins.json`: Venue data. Not checkins.
+- `places.json`: Venue data after processing complete. This is the file we'll load.
+
 
 
 

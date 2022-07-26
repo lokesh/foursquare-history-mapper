@@ -25,4 +25,10 @@ export class Canvas {
     // Normalize coordinate system to use css pixels.
     this.ctx.scale(scale, scale);
   }
+
+  resize(width, height) {
+    this.width = width;
+    this.height = height;
+    this.size();
+  }
 }

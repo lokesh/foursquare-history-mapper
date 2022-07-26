@@ -10,7 +10,7 @@
 
   <style>
     body {
-      overflow: hidden;
+      /*overflow: hidden;*/
       padding: 0;
       margin: 0;
       font: 12px "Berkeley Mono", monospace;
@@ -47,10 +47,9 @@
     Draw cycle: {{ r(drawCycleMS)  }}ms<br />
     ---<br />
     Count: {{ places.length }}<br />
-    <!-- Draw Count: {{ gridItemsCount }}<br /> -->
-    City: {{ city }}<br />
-    State: {{ state }}<br />
-    Country: {{ country }}<br />
+    Aspect ratio: {{ r(aspectRatio) }}<br />
+    Rows / Cols: {{ rows }} / {{ cols }}<br />
+
     Bounding Box: {{ r(box[0].lat) }}, {{ r(box[0].lng) }} --- {{ r(box[1].lat) }}, {{ r(box[1].lng) }}<br />
     Lat height: {{ r(box[0].lat - box[1].lat) }}<br />
     Lng width: {{ r(box[1].lng - box[0].lng) }} <br />
@@ -66,14 +65,14 @@
     <dat-folder label="Places">
       <dat-number v-model="minVisitCount" label="Min visit count"></dat-number>
       <dat-select v-model="area" :items="areaSelectOptions"  label="Area" @change="onAreaChange" /></dat-folder>
-      <!-- <dat-number v-model="boxTopLeft" label="Top left bound"></dat-number>
-      <dat-number v-model="boxBottomRight" label="Bottom right bound"></dat-number> -->
     </dat-folder>
 
     <dat-folder label="Grid">
-      <dat-number v-model="rows" label="Rows" :max="4800"></dat-number>
-      <dat-number v-model="cols" label="Cols" :max="4800"></dat-number>
-      <dat-number v-model="maxDist" label="Placement max dist" :max="40"></dat-number>
+      <dat-number v-model="width" label="Width" :min="400" :max="4800"></dat-number>
+      <dat-number v-model="aspectRatio" label="AspectRatio" :min="0.1" :max="8"></dat-number>
+      <dat-number v-model="rows" label="Rows" :min="10" :max="800"></dat-number>
+      <!-- <dat-number v-model="cols" label="Cols" readonly></dat-number> -->
+      <dat-number v-model="maxDist" label="Placement max dist" :min="0" :max="20"></dat-number>
       <dat-boolean v-model="showGrid" label="Show grid"></dat-boolean>
     </dat-folder>
     <dat-folder label="Style">
@@ -81,10 +80,6 @@
       <dat-color v-model="colorBg" label="Background"></dat-color>
       <dat-color v-model="colorLabel" label="Label color"></dat-color>
     </dat-folder>
-    <!-- <dat-string v-model="title" label="Title"/>
-      <dat-boolean v-model="showPicture" label="Show Picture"/>
-      <dat-button @click="nextPicture" label="Next picture"/>
-    </dat-folder>-->
   </dat-gui>
 
 
@@ -105,11 +100,8 @@ import { random } from './utils/math.js';
 
 const round = (num) => Number(num).toFixed(2);
 
-
-https://maps.googleapis.com/maps/api/staticmap?size=600x400&markers=icon%3Ahttp%3A%2F%2Fwww.google.com%2Fmapfiles%2Farrow.png%7C37.748967%2C-122.4422945&visible=37.819001%2C-122.539621%7C37.678933%2C-122.344968&key=AIzaSyBg71krPDs22xeMljgyMk0QHmyb9fCV994
-
-37.748967,
--122.4422945
+// Might not be necessary. hmm
+const HORIZONTAL_SQUISH = 1;
 
 const AREA_OPTIONS = {
   'World': [{ lat: 90, lng: -180 },{ lat: -90, lng: 180 }],
@@ -136,9 +128,6 @@ const areaSelectOptions = Object.keys(AREA_OPTIONS).map(opt => {
   }
 });
 
-const CANVAS_WIDTH = 1200;
-const CANVAS_HEIGHT = 1200;
-
 const PALETTE = [
   "#000",
 ];
@@ -164,12 +153,14 @@ const app = new Vue({
       box: AREA_OPTIONS['San Francisco'],
       area: 'San Francisco',
 
-      rows: 60,
-      cols: 60,
-      maxDist: 4,
+      width: 1000,
+      aspectRatio: 2,
+      rows: 200,
+      
+      maxDist: 2,
       showGrid: false,
 
-      minVisitCount: 2,
+      minVisitCount: 1,
       colorBg: '#000000',
       drawLabel: false,
       colorLabel: '#cccccc',
@@ -197,33 +188,45 @@ const app = new Vue({
   },
 
   mounted() {
-    this.canvas = new Canvas(this.$refs.canvas, CANVAS_WIDTH, CANVAS_HEIGHT);
+    this.calcAspectRatio();
+
+    this.canvas = new Canvas(this.$refs.canvas, this.width, this.width / this.aspectRatio);
     this.ctx = this.canvas.ctx;
   },
 
   watch: {
-    cols() {
-      this.refresh();
+    aspectRatio() {
+      this.resizeCanvas();
+      this.redraw();
+    },
+
+    box() {
+      this.calcAspectRatio();
     },
 
     drawLabel() {
-      this.refresh();
+      this.redraw();
     },
 
     maxDist() {
-      this.refresh();
+      this.redraw();
     },
 
     places(val, oldVal) {
-      this.refresh();
+      this.redraw();
     },
 
     rows() {
-      this.refresh();
+      this.redraw();
     },
 
     showGrid() {
-      this.refresh();
+      this.redraw();
+    },
+
+    width() {
+      this.resizeCanvas();
+      this.redraw();
     },
   },
 
@@ -241,6 +244,10 @@ const app = new Vue({
     //   return count;
     // },
 
+    cols() {
+      return Math.floor(this.rows * this.aspectRatio);
+    },
+
     latHeight() {
       return (this.box[0].lat - this.box[1].lat) / this.rows;
     },
@@ -253,14 +260,18 @@ const app = new Vue({
       let places = this.placesUnfiltered;
       places = this.filterByCount(places, this.minVisitCount);
       places = filterByBoundingBox(places, this.box);
-      //   this.boxTopLeft,
-      // });
       return places;
     },
   },
 
-  methods: {    
-    
+  methods: {        
+    calcAspectRatio() {
+      let latDiff = this.box[0].lat - this.box[1].lat;
+      let lngDiff = this.box[1].lng - this.box[0].lng
+      
+      this.aspectRatio = (lngDiff * HORIZONTAL_SQUISH) / latDiff;
+    },
+
     /**
      * Create empty grid (rows x cols)
      */
@@ -295,11 +306,11 @@ const app = new Vue({
             this.ctx.fillRect(x, y, colWidth, rowHeight)
 
             this.ctx.font = '8px Menlo';
-            this.ctx.fillStyle = '#000000';
+            this.ctx.fillStyle = this.colorLabel;
 
             // let label = place.count;
             if (this.drawLabel) {
-              let label = place.venue.substr(0, 6);
+              let label = place.venue.substr(0, 20);
               this.ctx.fillText(label, x, y + rowHeight);
             }
           } else {
@@ -329,14 +340,14 @@ const app = new Vue({
       return places.filter(place => place.count >= count);
     },
 
-    filterByLocale(places, city, state, country) {
-      return places.filter(place => {
-        if (city && place.city !== city) return false;
-        if (state && place.state !== state) return false;
-        if (country && place.country !== country) return false;
-        return true;
-      });
-    },
+    // filterByLocale(places, city, state, country) {
+    //   return places.filter(place => {
+    //     if (city && place.city !== city) return false;
+    //     if (state && place.state !== state) return false;
+    //     if (country && place.country !== country) return false;
+    //     return true;
+    //   });
+    // },
 
     gridLookup(lat, lng) {
       // BUG: row val was going out of bounds. Patched a stopgap fix with Math.min()
@@ -534,7 +545,7 @@ const app = new Vue({
 
     },
 
-    refresh() {
+    redraw() {
       const start = performance.now(); // returns something like 138.899999998509884, which means 138.9 milliseconds passed
       
       this.createGrid()
@@ -542,6 +553,10 @@ const app = new Vue({
       this.draw();
       
       this.drawCycleMS = performance.now() - start;
+    },
+
+    resizeCanvas() {
+      this.canvas.resize(this.width, this.width / this.aspectRatio);
     }
   }
 });
